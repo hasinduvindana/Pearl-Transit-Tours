@@ -21,13 +21,13 @@ const XIcon = (props: SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-const galleryImages = ["/img1.jpg", "/img2.jpg", "/img3.jpg", "/img4.jpg"];
+const galleryImages = ["/gimg1.jpg", "/gimg2.jpg", "/gimg3.jpg", "/gimg4.jpg", "/gimg5.jpg", "/gimg6.jpg", "/gimg7.jpg", "/gimg8.jpg", "/gimg9.jpg", "/gimg10.jpg","/gimg11.jpg", "/gimg12.jpg", "/gimg13.jpg", "/gimg14.jpg", "/gimg15.jpg", "/gimg16.jpg", "/gimg17.jpg", "/gimg18.jpg", "/gimg19.jpg", "/gimg20.jpg"];
 
 const slides = [
   {
     img: "/img1.jpg",
     title: "Welcome to Pearl Transit Tours",
-    subtitle: "Join us for unforgettable journeys...",
+    subtitle: "Join with us for unforgettable journeys...",
     bottomText: "Plan Your Memorable Tour With Us",
   },
   {
@@ -42,6 +42,31 @@ const slides = [
     subtitle: "Discover new destinations...",
     bottomText: "Let Us Plan Your Perfect Trip",
   },
+  {
+    img: "/img4.jpg",
+    title: "Welcome to Pearl Transit Tours",
+    subtitle: "Join us for unforgettable journeys...",
+    bottomText: "Plan Your Memorable Tour With Us",
+  },
+  {
+    img: "/img5.jpg",
+    title: "Explore Beautiful Sri Lanka",
+    subtitle: "Experience paradise with us...",
+    bottomText: "Your Dream Vacation Starts Here",
+  },
+  {
+    img: "/img6.jpg",
+    title: "Travel With Comfort & Trust",
+    subtitle: "Discover new destinations...",
+    bottomText: "Let Us Plan Your Perfect Trip",
+  },
+  {
+    img: "/img7.jpg",
+    title: "Welcome to Pearl Transit Tours",
+    subtitle: "Join us for unforgettable journeys...",
+    bottomText: "Plan Your Memorable Tour With Us",
+  },
+  
 ];
 
 export default function Home() {
@@ -76,7 +101,7 @@ export default function Home() {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrent((prev) => (prev + 1) % slides.length);
-    }, 3000);
+    }, 5000);
     return () => clearInterval(timer);
   }, []);
 
@@ -93,7 +118,12 @@ export default function Home() {
           {/* Left */}
           <div className="flex items-center gap-3">
             <Image src="/logo.png" alt="Logo" width={50} height={50} />
-            <h1 className="text-xl font-bold">Pearl Transit Tours & Travels</h1>
+            <h1
+              className="text-xl "
+              style={{ fontFamily: '"Brush Script MT", cursive', color: '#0b1a3a' }}
+            >
+              Pearl Transit Tours & Travels
+            </h1>
           </div>
 
           {/* Center (Desktop Menu) */}
@@ -130,6 +160,9 @@ export default function Home() {
           </div>
         )}
       </nav>
+
+      {/* Dark Background Under Navbar */}
+      <div className="fixed top-[27px] w-full h-20 bg-gradient-to-b from-black/100 to-transparent z-30"></div>
 
       {/* HERO / IMAGE SLIDER */}
       <div className="relative h-screen w-full mt-20">
@@ -213,9 +246,16 @@ export default function Home() {
 
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-4">
           {[
-            { img: "/dest1.jpg", name: "Ella" },
-            { img: "/dest2.jpg", name: "Sigiriya" },
-            { img: "/dest3.jpg", name: "Nuwara Eliya" },
+            { img: "/dest1.jpg", name: "Galle" },
+            { img: "/dest2.jpg", name: "Nuwara Eliya" },
+            { img: "/dest3.jpg", name: "Mirissa" },
+            { img: "/dest4.jpg", name: "Ahungalla" },
+            { img: "/dest5.jpg", name: "Bentota" }, 
+            { img: "/dest6.jpg", name: "Ella" },
+            { img: "/dest7.jpg", name: "Sigiriya" },
+            { img: "/dest8.jpg", name: "Colombo" },
+            { img: "/dest9.jpg", name: "Kandy" },
+            { img: "/dest10.jpg", name: "Arugambay" },
           ].map((d, i) => (
             <div key={i} className="bg-white/10 rounded-xl shadow-lg p-4 hover:scale-105 transition cursor-pointer">
               <Image src={d.img} alt={d.name} width={500} height={300} className="rounded-lg" />
