@@ -191,9 +191,9 @@ export default function Home() {
             transition={{ duration: 1 }}
             className="text-4xl md:text-6xl font-extrabold"
             style={{
-              color: 'rgba(255, 255, 255, 0.7)',
-              textShadow: '2px 2px 15px rgba(0, 0, 0, 0.8), 0 0 25px rgba(0, 0, 0, 0.5)',
-              WebkitTextStroke: '3px rgba(0, 0, 0, 0.3)'
+              color: 'rgba(255, 255, 255, 1.0)',
+              textShadow: '2px 2px 10px rgba(0, 0, 0, 0.4), 0 0 25px rgba(0, 0, 0, 0.7)',
+              WebkitTextStroke: '1px rgba(0, 0, 0, 0.3)'
             }}
           >
             {slides[current].title}
@@ -318,9 +318,9 @@ export default function Home() {
           {/* Contact Info */}
           <div>
             <h3 className="text-2xl font-bold mb-4">Pearl Transit Tours & Travels</h3>
-            <p>Email: info@pearltransit.com</p>
-            <p>Phone: +94 76 123 4567</p>
-            <p>Location: Colombo, Sri Lanka</p>
+            <p>Email: pearltransittravels@gmail.com</p>
+            <p>Phone: +94 76 478 77 44</p>
+            <p>Location: Ahungalla, Sri Lanka</p>
 
             <button className="mt-6 bg-blue-500 px-6 py-3 rounded-lg hover:bg-blue-600">
               Plan Your Tour
