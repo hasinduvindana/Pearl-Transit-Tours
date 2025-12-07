@@ -112,7 +112,7 @@ export default function Home() {
     <div className="text-white bg-[#0a0f1a] min-h-screen">
 
       {/* NAVBAR */}
-      <nav className="fixed top-0 w-full z-50 bg-transparent backdrop-blur-md border-b border-white/10">
+      <nav className="fixed top-0 w-full z-60 bg-transparent backdrop-blur-md border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
 
           {/* Left */}
@@ -120,7 +120,7 @@ export default function Home() {
             <Image src="/logo.png" alt="Logo" width={50} height={50} />
             <h1
               className="text-xl "
-              style={{ fontFamily: '"Brush Script MT", cursive', color: '#0b1a3a' }}
+              style={{ fontFamily: '"Brush Script MT", cursive', color: '#d2c7b3' }}
             >
               Pearl Transit Tours & Travels
             </h1>
@@ -162,10 +162,10 @@ export default function Home() {
       </nav>
 
       {/* Dark Background Under Navbar */}
-      <div className="fixed top-[27px] w-full h-20 bg-gradient-to-b from-black/100 to-transparent z-30"></div>
+      <div className="fixed top-[47px] w-full h-20 bg-gradient-to-b from-black/100 to-transparent z-30"></div>
 
       {/* HERO / IMAGE SLIDER */}
-      <div className="relative h-screen w-full mt-20">
+      <div className="relative h-screen w-full mt-0">
         <Image
           src={slides[current].img}
           alt="Slide"
@@ -189,7 +189,12 @@ export default function Home() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
-            className="text-4xl md:text-6xl font-extrabold drop-shadow-xl"
+            className="text-4xl md:text-6xl font-extrabold"
+            style={{
+              color: 'rgba(255, 255, 255, 0.7)',
+              textShadow: '2px 2px 15px rgba(0, 0, 0, 0.8), 0 0 25px rgba(0, 0, 0, 0.5)',
+              WebkitTextStroke: '3px rgba(0, 0, 0, 0.3)'
+            }}
           >
             {slides[current].title}
           </motion.h1>
@@ -218,7 +223,7 @@ export default function Home() {
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ delay: 1.2 }}
-            className="mt-6 bg-blue-500 px-6 py-3 rounded-lg hover:bg-blue-600"
+            className="mt-6 bg-blue-60/30 backdrop-blur-sm border border-blue-200/50 px-6 py-3 rounded-lg hover:bg-blue-500/50 hover:border-blue-300"
           >
             Plan Your Tour
           </motion.button>
