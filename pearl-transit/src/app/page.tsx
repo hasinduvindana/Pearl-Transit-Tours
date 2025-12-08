@@ -224,6 +224,7 @@ export default function Home() {
             animate={{ scale: 1 }}
             transition={{ delay: 1.2 }}
             className="mt-6 bg-blue-60/30 backdrop-blur-sm border border-blue-200/50 px-6 py-3 rounded-lg hover:bg-blue-500/50 hover:border-blue-300"
+            onClick={() => (window.location.href = '/plantour')}
           >
             Plan Your Tour
           </motion.button>
@@ -322,7 +323,7 @@ export default function Home() {
             <p>Phone: +94 76 478 77 44</p>
             <p>Location: Ahungalla, Sri Lanka</p>
 
-            <button className="mt-6 bg-blue-500 px-6 py-3 rounded-lg hover:bg-blue-600">
+            <button className="mt-6 bg-blue-500 px-6 py-3 rounded-lg hover:bg-blue-600" onClick={() => (window.location.href = '/plantour')}>
               Plan Your Tour
             </button>
           </div>
