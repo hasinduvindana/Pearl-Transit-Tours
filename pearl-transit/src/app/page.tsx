@@ -120,7 +120,7 @@ export default function Home() {
             <Image src="/logo.png" alt="Logo" width={50} height={50} />
             <h1
               className="text-xl "
-              style={{ fontFamily: '"Brush Script MT", cursive', color: '#d2c7b3' }}
+              style={{ fontFamily: '"Brush Script MT", cursive', color: '#d2c7b3',fontSize: '24px' }}
             >
               Pearl Transit Tours & Travels
             </h1>
@@ -128,16 +128,16 @@ export default function Home() {
 
           {/* Center (Desktop Menu) */}
           <ul className="hidden md:flex gap-8 text-lg">
-            <li className="hover:text-blue-300 cursor-pointer">About Us</li>
-            <li className="hover:text-blue-300 cursor-pointer">Gallery</li>
-            <li className="hover:text-blue-300 cursor-pointer">Destinations</li>
-            <li className="hover:text-blue-300 cursor-pointer">Feedbacks</li>
-            <li className="hover:text-blue-300 cursor-pointer">Contact Us</li>
-            <li className="hover:text-blue-300 cursor-pointer">Plan Your Tour</li>
+            <li className="hover:text-blue-300 cursor-pointer" onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}>About Us</li>
+            <li className="hover:text-blue-300 cursor-pointer" onClick={() => document.getElementById('gallery')?.scrollIntoView({ behavior: 'smooth' })}>Gallery</li>
+            <li className="hover:text-blue-300 cursor-pointer" onClick={() => document.getElementById('destinations')?.scrollIntoView({ behavior: 'smooth' })}>Destinations</li>
+            <li className="hover:text-blue-300 cursor-pointer" onClick={() => document.getElementById('feedbacks')?.scrollIntoView({ behavior: 'smooth' })}>Feedbacks</li>
+            <li className="hover:text-blue-300 cursor-pointer" onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}>Contact Us</li>
+            <li className="hover:text-blue-300 cursor-pointer" onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}>Plan Your Tour</li>
           </ul>
 
           {/* Right secret login button */}
-          <button className="hidden md:block bg-white/10 px-4 py-2 rounded-lg hover:bg-white/20 backdrop-blur">
+          <button className="hidden md:block bg-white/5 px-4 py-2 rounded-lg hover:bg-white/30 backdrop-blur" onClick={() => window.location.href = '/login'}>
             Login
           </button>
 
@@ -150,12 +150,12 @@ export default function Home() {
         {/* Mobile Menu */}
         {menuOpen && (
           <div className="md:hidden bg-black/60 backdrop-blur-lg p-4 space-y-4 text-center">
-            <p>About Us</p>
-            <p>Gallery</p>
-            <p>Destinations</p>
-            <p>Feedbacks</p>
-            <p>Contact Us</p>
-            <p>Plan Your Tour</p>
+            <p className="cursor-pointer hover:text-blue-300" onClick={() => { document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' }); setMenuOpen(false); }}>About Us</p>
+            <p className="cursor-pointer hover:text-blue-300" onClick={() => { document.getElementById('gallery')?.scrollIntoView({ behavior: 'smooth' }); setMenuOpen(false); }}>Gallery</p>
+            <p className="cursor-pointer hover:text-blue-300" onClick={() => { document.getElementById('destinations')?.scrollIntoView({ behavior: 'smooth' }); setMenuOpen(false); }}>Destinations</p>
+            <p className="cursor-pointer hover:text-blue-300" onClick={() => { document.getElementById('feedbacks')?.scrollIntoView({ behavior: 'smooth' }); setMenuOpen(false); }}>Feedbacks</p>
+            <p className="cursor-pointer hover:text-blue-300" onClick={() => { document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }); setMenuOpen(false); }}>Contact Us</p>
+            <p className="cursor-pointer hover:text-blue-300" onClick={() => { document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }); setMenuOpen(false); }}>Plan Your Tour</p>
             <button className="w-full bg-white/20 py-2 rounded-lg">Login</button>
           </div>
         )}
@@ -231,7 +231,7 @@ export default function Home() {
       </div>
 
       {/* ABOUT US */}
-      <section id="about" className="max-w-7xl mx-auto px-4 py-20 grid md:grid-cols-2 gap-10">
+      <section id="about" className="max-w-7xl mx-auto px-4 py-20 grid md:grid-cols-2 gap-10 scroll-mt-20">
         <div className="flex justify-center">
           <Image src="/logo.png" alt="Logo" width={250} height={250} className="rounded-xl shadow-xl" />
         </div>
@@ -246,7 +246,7 @@ export default function Home() {
         </div>
       </section>
       {/* DESTINATIONS */}
-      <section id="destinations" className="py-20 bg-[#0a0f1a] text-white">
+      <section id="destinations" className="py-20 bg-[#0a0f1a] text-white scroll-mt-20">
         <h2 className="text-center text-4xl font-bold mb-12">Top Destinations</h2>
 
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-4">
@@ -271,7 +271,7 @@ export default function Home() {
       </section>
 
       {/* GALLERY */}
-      <section id="gallery" className="bg-[#0d1320] py-16">
+      <section id="gallery" className="bg-[#0d1320] py-16 scroll-mt-20">
         <h2 className="text-center text-4xl font-bold mb-10">Gallery</h2>
 
         <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-3 gap-4 px-4">
@@ -290,7 +290,7 @@ export default function Home() {
       </section>
 
       {/* FEEDBACKS */}
-      <section id="feedbacks" className="py-20 bg-[#0d1320] text-white">
+      <section id="feedbacks" className="py-20 bg-[#0d1320] text-white scroll-mt-20">
         <h2 className="text-center text-4xl font-bold mb-12">What Our Travelers Say</h2>
 
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-4">
@@ -310,7 +310,7 @@ export default function Home() {
       </section>
 
       {/* CONTACT US */}
-      <section id="contact" className="py-20 bg-[#0a0f1a] text-white">
+      <section id="contact" className="py-20 bg-[#0a0f1a] text-white scroll-mt-20">
         <h2 className="text-center text-4xl font-bold mb-10">Contact Us</h2>
 
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 px-4 items-center">
