@@ -49,11 +49,14 @@ const COUNTRY_CODES = [
 const ACTIVITIES = [
   "Water Sport Activities",
   "Boat rides in River",
+  "Visit Turtle Hatchery",
+  "Visit Mangrove Forest",
   "Boat rides in the Sea",
   "Dive in Sea",
   "Stilt fishing",
   "Surfing",
   "Visit the Whales",
+  "Visit Elephants",
   "Safari",
   "To know about Sri Lankan Spices",
   "To know about Gems",
@@ -68,20 +71,35 @@ const PLACE_TO_DISTRICT: Record<string, string> = {
   "nuwara eliya": "nuwara_eliya",
   "ella": "badulla",
   "kandy": "kandy",
+  "matale": "matale",
+  "mathale": "matale",
+  "matale district": "matale",
+  "dambulla": "matale",
   // south / west
   "galle": "galle",
   "colombo": "colombo",
+  "lotus tower": "colombo",
   "mirissa": "matara",
   "matara": "matara",
   "ahungalla": "galle",
   "bentota": "galle",
   "hikkaduwa": "galle",
   "ungama": "galle",
+  "madu river": "galle",
   // east
   "trincomalee": "trincomalee",
   "arugam bay": "ampara",
   "arugambay": "ampara",
+  "ampara": "ampara",
+  "ampara district": "ampara",
+  "kalmunai": "ampara",
+  "sammanthurai": "ampara",
   "passikudah": "batticaloa",
+  "pasikudah": "batticaloa",
+  "pasikuda": "batticaloa",
+  "kalkudah": "batticaloa",
+  "batticaloa": "batticaloa",
+  "batti": "batticaloa",
   // north
   "jaffna": "jaffna",
   // cultural / rock
@@ -97,6 +115,21 @@ const PLACE_TO_DISTRICT: Record<string, string> = {
   "ratnapura": "ratnapura",
   "trinco": "trincomalee",
 };
+
+const normalizePlace = (value: string) =>
+  value
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[^a-z\s]/g, "")
+    .replace(/\s+/g, " ");
+
+const titleCase = (value: string) =>
+  value
+    .split(" ")
+    .filter(Boolean)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
 
 export default function PlanTour() {
   // Form state
@@ -122,6 +155,15 @@ export default function PlanTour() {
   const [contactCode, setContactCode] = useState(COUNTRY_CODES[0].code);
   const [contact, setContact] = useState("");
   const [email, setEmail] = useState("");
+  const placeSuggestions = useMemo(() => {
+    const query = normalizePlace(placeInput);
+    if (!query) return [] as string[];
+    const fromKeys = Object.keys(PLACE_TO_DISTRICT)
+      .filter((key) => key.includes(query))
+      .slice(0, 6);
+    const unique = Array.from(new Set(fromKeys));
+    return unique.map((k) => titleCase(k));
+  }, [placeInput]);
 
   // UI state
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -131,7 +173,7 @@ export default function PlanTour() {
 
   // helper: map place -> district id
   const detectDistrictForPlace = (placeName: string) => {
-    const s = placeName.trim().toLowerCase();
+    const s = normalizePlace(placeName);
     // try direct keywords
     if (PLACE_TO_DISTRICT[s]) return PLACE_TO_DISTRICT[s];
     // try contains
@@ -142,9 +184,11 @@ export default function PlanTour() {
     return null;
   };
 
-  const addPlace = () => {
-    const val = placeInput.trim();
+  const addPlaceValue = (raw: string) => {
+    const val = raw.trim();
     if (!val) return;
+    // avoid duplicates (case-insensitive)
+    if (places.some((p) => p.toLowerCase() === val.toLowerCase())) return;
     const newPlaces = [...places, val];
     setPlaces(newPlaces);
     setPlaceInput("");
@@ -154,6 +198,8 @@ export default function PlanTour() {
       setHighlightedDistricts((prev) => ({ ...prev, [district]: true }));
     }
   };
+
+  const addPlace = () => addPlaceValue(placeInput);
 
   const removePlace = (idx: number) => {
     const removed = [...places];
@@ -298,7 +344,7 @@ export default function PlanTour() {
               </div>
 
               {/* Adults & Children counters */}
-              <div className="grid grid-cols-2 gap-3 sm:gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
                   <label className="block text-xs sm:text-sm text-gray-200">3A. Adults <span className="text-rose-400">*</span></label>
                   <div className="flex items-center gap-2 mt-1">
@@ -323,18 +369,18 @@ export default function PlanTour() {
               {/* Arrival date */}
               <div>
                 <label className="block text-xs sm:text-sm text-gray-200">4. Arrival Date (day / month / year) <span className="text-rose-400">*</span></label>
-                <div className="flex gap-1 sm:gap-2 mt-1">
-                  <select value={day} onChange={(e) => setDay(e.target.value)} className="bg-transparent px-2 py-2 rounded text-xs sm:text-sm border border-white/20 text-white focus:ring-2 focus:ring-blue-500 flex-1">
+                <div className="flex flex-col sm:flex-row gap-2 mt-1">
+                  <select value={day} onChange={(e) => setDay(e.target.value)} className="bg-transparent px-2 py-2 rounded text-xs sm:text-sm border border-white/20 text-white focus:ring-2 focus:ring-blue-500 flex-1 min-w-0">
                     <option className="bg-gray-900 text-white">---</option>
                     {[...Array(31)].map((_, i) => (<option key={i} value={String(i + 1)} className="bg-gray-900 text-white">{i + 1}</option>))}
                   </select>
 
-                  <select value={month} onChange={(e) => setMonth(e.target.value)} className="bg-transparent px-2 py-2 rounded text-xs sm:text-sm border border-white/20 text-white focus:ring-2 focus:ring-blue-500 flex-1">
+                  <select value={month} onChange={(e) => setMonth(e.target.value)} className="bg-transparent px-2 py-2 rounded text-xs sm:text-sm border border-white/20 text-white focus:ring-2 focus:ring-blue-500 flex-1 min-w-0">
                     <option className="bg-gray-900 text-white">---</option>
                     {["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].map((m) => (<option key={m} value={m} className="bg-gray-900 text-white">{m}</option>))}
                   </select>
 
-                  <select value={year} onChange={(e) => setYear(e.target.value)} className="bg-transparent px-2 py-2 rounded text-xs sm:text-sm border border-white/20 text-white focus:ring-2 focus:ring-blue-500 flex-1">
+                  <select value={year} onChange={(e) => setYear(e.target.value)} className="bg-transparent px-2 py-2 rounded text-xs sm:text-sm border border-white/20 text-white focus:ring-2 focus:ring-blue-500 flex-1 min-w-0">
                     <option className="bg-gray-900 text-white">---</option>
                     {Array.from({length:6}).map((_,i)=> {
                       const y = new Date().getFullYear() + i;
@@ -360,7 +406,7 @@ export default function PlanTour() {
               {/* Suggestions about places */}
               <div>
                 <label className="block text-xs sm:text-sm text-gray-200">6. Do you have suggestions about places you want to visit?</label>
-                <div className="flex gap-3 sm:gap-4 mt-2">
+                <div className="flex flex-wrap gap-2 sm:gap-4 mt-2">
                   <label className={`px-3 sm:px-4 py-2 text-xs sm:text-sm rounded cursor-pointer ${hasPlaces==='yes' ? "bg-blue-600/40" : "bg-white/6"}`}>
                     <input type="radio" name="hasPlaces" value="yes" checked={hasPlaces==='yes'} onChange={() => setHasPlaces("yes")} className="mr-2" /> Yes
                   </label>
@@ -371,10 +417,25 @@ export default function PlanTour() {
 
                 {hasPlaces === "yes" && (
                   <div className="mt-3">
-                    <div className="flex gap-2">
+                    <div className="flex flex-col sm:flex-row gap-2">
                       <input value={placeInput} onChange={(e)=> setPlaceInput(e.target.value)} placeholder="Type a place name (e.g. Nuwara Eliya, Galle)" className="flex-1 bg-white/6 px-3 py-2 text-sm rounded" />
-                      <button type="button" onClick={addPlace} className="px-3 sm:px-4 py-2 text-sm rounded bg-blue-600 hover:opacity-90">Add</button>
+                      <button type="button" onClick={addPlace} className="px-3 sm:px-4 py-2 text-sm rounded bg-blue-600 hover:opacity-90 w-full sm:w-auto">Add</button>
                     </div>
+
+                    {placeSuggestions.length > 0 && (
+                      <div className="mt-2 grid grid-cols-2 sm:grid-cols-3 gap-2">
+                        {placeSuggestions.map((s) => (
+                          <button
+                            key={s}
+                            type="button"
+                            onClick={() => addPlaceValue(s)}
+                            className="text-left px-3 py-2 bg-white/8 hover:bg-white/12 rounded text-xs sm:text-sm border border-white/10"
+                          >
+                            {s}
+                          </button>
+                        ))}
+                      </div>
+                    )}
 
                     {places.length > 0 && (
                       <div className="mt-3 space-y-2">
@@ -450,7 +511,7 @@ export default function PlanTour() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                 <div>
                   <label className="block text-xs sm:text-sm text-gray-200">10A. Contact Number (WhatsApp) <span className="text-rose-400">*</span></label>
-                  <div className="mt-1 flex gap-2">
+                  <div className="mt-1 flex flex-col sm:flex-row gap-2">
                     <select value={contactCode} onChange={(e) => setContactCode(e.target.value)} className="bg-transparent px-2 sm:px-3 py-2 rounded text-xs sm:text-sm border border-white/20 min-w-[90px] sm:min-w-[110px] text-white focus:ring-2 focus:ring-blue-500">
                       {COUNTRY_CODES.map((c) => (
                         <option key={c.code} value={c.code} className="bg-gray-900 text-white">{c.label}</option>
@@ -469,9 +530,9 @@ export default function PlanTour() {
               </div>
 
               {/* Buttons */}
-              <div className="flex gap-2 sm:gap-3 mt-4">
-                <button type="button" onClick={clearForm} className="px-3 sm:px-4 py-2 text-sm rounded bg-white/6 hover:opacity-90">Clear</button>
-                <button type="submit" className="flex-1 px-3 sm:px-4 py-2 text-sm rounded bg-gradient-to-r from-cyan-500 to-blue-600 font-semibold">Submit Request</button>
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 mt-4">
+                <button type="button" onClick={clearForm} className="px-3 sm:px-4 py-2.5 text-sm rounded bg-white/6 hover:opacity-90 w-full sm:w-auto">Clear</button>
+                <button type="submit" className="flex-1 px-3 sm:px-4 py-3 text-sm rounded bg-gradient-to-r from-cyan-500 to-blue-600 font-semibold">Submit Request</button>
               </div>
             </form>
           </div>
