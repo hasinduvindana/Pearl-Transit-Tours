@@ -28,11 +28,11 @@ const COUNTRIES = [
 ];
 
 const VEHICLES = [
-  { id: "hatchback", title: "Hatchback Car", pax: "1 - 2 Passengers", icon: "car-1" },
-  { id: "sedan", title: "Sedan Car", pax: "1 - 2 Passengers", icon: "car-2" },
-  { id: "mini-suv", title: "Mini SUV", pax: "1 - 2 Passengers", icon: "car-3" },
-  { id: "flatroof-van", title: "Flatroof Van", pax: "1 - 5 Passengers", icon: "van-1" },
-  { id: "highroof-van", title: "Highroof Van", pax: "1 - 8 Passengers", icon: "van-2" },
+  { id: "hatchback", title: "Hatchback Car", pax: "1 - 2 Passengers", iconSrc: "/hatchback.png" },
+  { id: "sedan", title: "Sedan Car", pax: "1 - 2 Passengers", iconSrc: "/sedan.png" },
+  { id: "mini-suv", title: "Mini SUV", pax: "1 - 2 Passengers", iconSrc: "/minisuv.png" },
+  { id: "flatroof-van", title: "Flatroof Van", pax: "1 - 5 Passengers", iconSrc: "/flatroofvan.png" },
+  { id: "highroof-van", title: "Highroof Van", pax: "1 - 8 Passengers", iconSrc: "/highroofvan.png" },
 ];
 
 const COUNTRY_CODES = [
@@ -258,113 +258,113 @@ export default function PlanTour() {
   const clamp = (v: number, min = 0, max = 100) => Math.max(min, Math.min(max, v));
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#000814] via-[#00122b] to-black text-white px-4 py-6">
+    <div className="min-h-screen bg-gradient-to-b from-[#000814] via-[#00122b] to-black text-white px-3 sm:px-4 py-4 sm:py-6">
       <div className="max-w-6xl mx-auto relative">
 
         {/* Back button top-right */}
-        <div className="flex justify-end">
-          <Link href="/" className="inline-flex items-center gap-2 text-gray-200 hover:text-white">
-            <svg className="w-6 h-6 inline-block" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <div className="flex justify-end mb-4">
+          <Link href="/" className="inline-flex items-center gap-2 text-gray-200 hover:text-white text-sm sm:text-base">
+            <svg className="w-5 h-5 sm:w-6 sm:h-6 inline-block" viewBox="0 0 24 24" fill="none" stroke="currentColor">
               <path strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M15 18l-6-6 6-6" />
             </svg>
             Back
           </Link>
         </div>
 
-        <div className="mt-4 grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
           {/* LEFT / FORM */}
-          <div className="lg:col-span-2 bg-white/5 p-6 rounded-2xl shadow-lg">
-            <h2 className="text-2xl font-bold mb-2">Plan Your Tour</h2>
-            <p className="text-gray-300 mb-6">Tell us about your trip — required fields are marked *</p>
+          <div className="lg:col-span-2 bg-white/5 p-4 sm:p-6 rounded-2xl shadow-lg">
+            <h2 className="text-xl sm:text-2xl font-bold mb-2">Plan Your Tour</h2>
+            <p className="text-xs sm:text-sm text-gray-300 mb-4 sm:mb-6">Tell us about your trip — required fields are marked *</p>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
 
               {/* Name */}
               <div>
-                <label className="block text-sm text-gray-200">1. Full Name <span className="text-rose-400">*</span></label>
-                <input value={name} onChange={(e) => setName(e.target.value)} className="mt-1 w-full bg-white/6 px-3 py-2 rounded-md outline-none focus:ring-2 focus:ring-blue-500" placeholder="Your full name" />
-                {errors.name && <div className="text-rose-400 text-sm mt-1">{errors.name}</div>}
+                <label className="block text-xs sm:text-sm text-gray-200">1. Full Name <span className="text-rose-400">*</span></label>
+                <input value={name} onChange={(e) => setName(e.target.value)} className="mt-1 w-full bg-white/6 px-3 py-2 rounded-md text-sm outline-none focus:ring-2 focus:ring-blue-500" placeholder="Your full name" />
+                {errors.name && <div className="text-rose-400 text-xs sm:text-sm mt-1">{errors.name}</div>}
               </div>
 
               {/* Country */}
               <div>
-                <label className="block text-sm text-gray-200">2. Country <span className="text-rose-400">*</span></label>
-                <select value={country} onChange={(e) => setCountry(e.target.value)} className="mt-1 w-full bg-white/10 backdrop-blur px-3 py-2 rounded-md outline-none border border-white/10">
+                <label className="block text-xs sm:text-sm text-gray-200">2. Country <span className="text-rose-400">*</span></label>
+                <select value={country} onChange={(e) => setCountry(e.target.value)} className="mt-1 w-full bg-transparent px-3 py-2 rounded-md text-sm outline-none border border-white/20 text-white focus:ring-2 focus:ring-blue-500">
                   {COUNTRIES.map((c) => (
-                    <option key={c.code} value={c.code}>{c.flag} {c.label}</option>
+                    <option key={c.code} value={c.code} className="bg-gray-900 text-white">{c.flag} {c.label}</option>
                   ))}
                 </select>
-                {errors.country && <div className="text-rose-400 text-sm mt-1">{errors.country}</div>}
+                {errors.country && <div className="text-rose-400 text-xs sm:text-sm mt-1">{errors.country}</div>}
               </div>
 
               {/* Adults & Children counters */}
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-3 sm:gap-4">
                 <div>
-                  <label className="block text-sm text-gray-200">3A. Adults <span className="text-rose-400">*</span></label>
+                  <label className="block text-xs sm:text-sm text-gray-200">3A. Adults <span className="text-rose-400">*</span></label>
                   <div className="flex items-center gap-2 mt-1">
-                    <button type="button" onClick={() => setAdults((a) => clamp(a - 1, 0, 99))} className="px-3 py-1 rounded bg-white/6">-</button>
-                    <input value={adults} onChange={(e) => setAdults(Number(e.target.value || 0))} className="w-16 text-center bg-white/6 px-2 py-1 rounded" inputMode="numeric" />
-                    <button type="button" onClick={() => setAdults((a) => clamp(a + 1, 0, 99))} className="px-3 py-1 rounded bg-white/6">+</button>
+                    <button type="button" onClick={() => setAdults((a) => clamp(a - 1, 0, 99))} className="px-2 sm:px-3 py-1 text-sm rounded bg-white/6">-</button>
+                    <input value={adults} onChange={(e) => setAdults(Number(e.target.value || 0))} className="flex-1 text-center bg-white/6 px-2 py-1 text-sm rounded" inputMode="numeric" />
+                    <button type="button" onClick={() => setAdults((a) => clamp(a + 1, 0, 99))} className="px-2 sm:px-3 py-1 text-sm rounded bg-white/6">+</button>
                   </div>
-                  {errors.adults && <div className="text-rose-400 text-sm mt-1">{errors.adults}</div>}
+                  {errors.adults && <div className="text-rose-400 text-xs sm:text-sm mt-1">{errors.adults}</div>}
                 </div>
 
                 <div>
-                  <label className="block text-sm text-gray-200">3B. Children <span className="text-rose-400">*</span></label>
+                  <label className="block text-xs sm:text-sm text-gray-200">3B. Children <span className="text-rose-400">*</span></label>
                   <div className="flex items-center gap-2 mt-1">
-                    <button type="button" onClick={() => setChildren((c) => clamp(c - 1, 0, 99))} className="px-3 py-1 rounded bg-white/6">-</button>
-                    <input value={children} onChange={(e) => setChildren(Number(e.target.value || 0))} className="w-16 text-center bg-white/6 px-2 py-1 rounded" inputMode="numeric" />
-                    <button type="button" onClick={() => setChildren((c) => clamp(c + 1, 0, 99))} className="px-3 py-1 rounded bg-white/6">+</button>
+                    <button type="button" onClick={() => setChildren((c) => clamp(c - 1, 0, 99))} className="px-2 sm:px-3 py-1 text-sm rounded bg-white/6">-</button>
+                    <input value={children} onChange={(e) => setChildren(Number(e.target.value || 0))} className="flex-1 text-center bg-white/6 px-2 py-1 text-sm rounded" inputMode="numeric" />
+                    <button type="button" onClick={() => setChildren((c) => clamp(c + 1, 0, 99))} className="px-2 sm:px-3 py-1 text-sm rounded bg-white/6">+</button>
                   </div>
-                  {errors.children && <div className="text-rose-400 text-sm mt-1">{errors.children}</div>}
+                  {errors.children && <div className="text-rose-400 text-xs sm:text-sm mt-1">{errors.children}</div>}
                 </div>
               </div>
 
               {/* Arrival date */}
               <div>
-                <label className="block text-sm text-gray-200">4. Arrival Date (day / month / year) <span className="text-rose-400">*</span></label>
-                <div className="flex gap-2 mt-1">
-                  <select value={day} onChange={(e) => setDay(e.target.value)} className="bg-white/10 backdrop-blur px-2 py-2 rounded w-24 border border-white/10">
-                    <option>---</option>
-                    {[...Array(31)].map((_, i) => (<option key={i} value={String(i + 1)}>{i + 1}</option>))}
+                <label className="block text-xs sm:text-sm text-gray-200">4. Arrival Date (day / month / year) <span className="text-rose-400">*</span></label>
+                <div className="flex gap-1 sm:gap-2 mt-1">
+                  <select value={day} onChange={(e) => setDay(e.target.value)} className="bg-transparent px-2 py-2 rounded text-xs sm:text-sm border border-white/20 text-white focus:ring-2 focus:ring-blue-500 flex-1">
+                    <option className="bg-gray-900 text-white">---</option>
+                    {[...Array(31)].map((_, i) => (<option key={i} value={String(i + 1)} className="bg-gray-900 text-white">{i + 1}</option>))}
                   </select>
 
-                  <select value={month} onChange={(e) => setMonth(e.target.value)} className="bg-white/10 backdrop-blur px-2 py-2 rounded border border-white/10">
-                    <option>---</option>
-                    {["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].map((m) => (<option key={m} value={m}>{m}</option>))}
+                  <select value={month} onChange={(e) => setMonth(e.target.value)} className="bg-transparent px-2 py-2 rounded text-xs sm:text-sm border border-white/20 text-white focus:ring-2 focus:ring-blue-500 flex-1">
+                    <option className="bg-gray-900 text-white">---</option>
+                    {["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].map((m) => (<option key={m} value={m} className="bg-gray-900 text-white">{m}</option>))}
                   </select>
 
-                  <select value={year} onChange={(e) => setYear(e.target.value)} className="bg-white/10 backdrop-blur px-2 py-2 rounded w-28 border border-white/10">
-                    <option>---</option>
+                  <select value={year} onChange={(e) => setYear(e.target.value)} className="bg-transparent px-2 py-2 rounded text-xs sm:text-sm border border-white/20 text-white focus:ring-2 focus:ring-blue-500 flex-1">
+                    <option className="bg-gray-900 text-white">---</option>
                     {Array.from({length:6}).map((_,i)=> {
                       const y = new Date().getFullYear() + i;
-                      return <option key={y} value={String(y)}>{y}</option>;
+                      return <option key={y} value={String(y)} className="bg-gray-900 text-white">{y}</option>;
                     })}
                   </select>
                 </div>
-                <div className="text-sm text-gray-300 mt-1">Selected: <span className="font-medium">{arrivalDisplay}</span></div>
-                {errors.arrival && <div className="text-rose-400 text-sm mt-1">{errors.arrival}</div>}
+                <div className="text-xs sm:text-sm text-gray-300 mt-1">Selected: <span className="font-medium">{arrivalDisplay}</span></div>
+                {errors.arrival && <div className="text-rose-400 text-xs sm:text-sm mt-1">{errors.arrival}</div>}
               </div>
 
               {/* Days expect */}
               <div>
-                <label className="block text-sm text-gray-200">5. How many days do you expect to spend in Sri Lanka? <span className="text-rose-400">*</span></label>
+                <label className="block text-xs sm:text-sm text-gray-200">5. How many days do you expect to spend in Sri Lanka? <span className="text-rose-400">*</span></label>
                 <div className="flex items-center gap-2 mt-1">
-                  <button type="button" onClick={() => setDaysCount((d) => clamp(d - 1, 1, 365))} className="px-3 py-1 rounded bg-white/6">-</button>
-                  <input value={daysCount} onChange={(e) => setDaysCount(Number(e.target.value || 1))} className="w-20 text-center bg-white/6 px-2 py-1 rounded" inputMode="numeric" />
-                  <button type="button" onClick={() => setDaysCount((d) => clamp(d + 1, 1, 365))} className="px-3 py-1 rounded bg-white/6">+</button>
+                  <button type="button" onClick={() => setDaysCount((d) => clamp(d - 1, 1, 365))} className="px-2 sm:px-3 py-1 text-sm rounded bg-white/6">-</button>
+                  <input value={daysCount} onChange={(e) => setDaysCount(Number(e.target.value || 1))} className="flex-1 text-center bg-white/6 px-2 py-1 text-sm rounded" inputMode="numeric" />
+                  <button type="button" onClick={() => setDaysCount((d) => clamp(d + 1, 1, 365))} className="px-2 sm:px-3 py-1 text-sm rounded bg-white/6">+</button>
                 </div>
-                {errors.daysCount && <div className="text-rose-400 text-sm mt-1">{errors.daysCount}</div>}
+                {errors.daysCount && <div className="text-rose-400 text-xs sm:text-sm mt-1">{errors.daysCount}</div>}
               </div>
 
               {/* Suggestions about places */}
               <div>
-                <label className="block text-sm text-gray-200">6. Do you have suggestions about places you want to visit?</label>
-                <div className="flex gap-4 mt-2">
-                  <label className={`px-4 py-2 rounded cursor-pointer ${hasPlaces==='yes' ? "bg-blue-600/40" : "bg-white/6"}`}>
+                <label className="block text-xs sm:text-sm text-gray-200">6. Do you have suggestions about places you want to visit?</label>
+                <div className="flex gap-3 sm:gap-4 mt-2">
+                  <label className={`px-3 sm:px-4 py-2 text-xs sm:text-sm rounded cursor-pointer ${hasPlaces==='yes' ? "bg-blue-600/40" : "bg-white/6"}`}>
                     <input type="radio" name="hasPlaces" value="yes" checked={hasPlaces==='yes'} onChange={() => setHasPlaces("yes")} className="mr-2" /> Yes
                   </label>
-                  <label className={`px-4 py-2 rounded cursor-pointer ${hasPlaces==='no' ? "bg-blue-600/40" : "bg-white/6"}`}>
+                  <label className={`px-3 sm:px-4 py-2 text-xs sm:text-sm rounded cursor-pointer ${hasPlaces==='no' ? "bg-blue-600/40" : "bg-white/6"}`}>
                     <input type="radio" name="hasPlaces" value="no" checked={hasPlaces==='no'} onChange={() => setHasPlaces("no")} className="mr-2" /> No
                   </label>
                 </div>
@@ -372,20 +372,20 @@ export default function PlanTour() {
                 {hasPlaces === "yes" && (
                   <div className="mt-3">
                     <div className="flex gap-2">
-                      <input value={placeInput} onChange={(e)=> setPlaceInput(e.target.value)} placeholder="Type a place name (e.g. Nuwara Eliya, Galle)" className="flex-1 bg-white/6 px-3 py-2 rounded" />
-                      <button type="button" onClick={addPlace} className="px-4 py-2 rounded bg-blue-600 hover:opacity-90">Add</button>
+                      <input value={placeInput} onChange={(e)=> setPlaceInput(e.target.value)} placeholder="Type a place name (e.g. Nuwara Eliya, Galle)" className="flex-1 bg-white/6 px-3 py-2 text-sm rounded" />
+                      <button type="button" onClick={addPlace} className="px-3 sm:px-4 py-2 text-sm rounded bg-blue-600 hover:opacity-90">Add</button>
                     </div>
 
                     {places.length > 0 && (
                       <div className="mt-3 space-y-2">
                         {places.map((p, i) => (
-                          <div key={i} className="flex items-center justify-between bg-white/6 p-2 rounded">
+                          <div key={i} className="flex items-center justify-between bg-white/6 p-2 rounded text-sm">
                             <div>
                               <div className="font-medium">{p}</div>
-                              <div className="text-sm text-gray-300">{detectDistrictForPlace(p) ?? "District: unknown"}</div>
+                              <div className="text-xs text-gray-300">{detectDistrictForPlace(p) ?? "District: unknown"}</div>
                             </div>
                             <div className="flex gap-2">
-                              <button type="button" onClick={() => removePlace(i)} className="text-rose-400 px-3 py-1 rounded bg-white/3">Remove</button>
+                              <button type="button" onClick={() => removePlace(i)} className="text-rose-400 px-2 sm:px-3 py-1 text-xs sm:text-sm rounded bg-white/3">Remove</button>
                             </div>
                           </div>
                         ))}
@@ -393,8 +393,10 @@ export default function PlanTour() {
                     )}
 
                     <div className="mt-4">
-                      <h4 className="text-sm text-gray-200 mb-2">Map — selected districts are highlighted</h4>
-                      <SriLankaMap highlighted={highlightedDistricts} />
+                      <h4 className="text-xs sm:text-sm text-gray-200 mb-2">Map — selected districts are highlighted</h4>
+                      <div className="rounded bg-black/20 p-2 sm:p-3 bg-[url('/lkmap.png')] bg-cover bg-center">
+                        <SriLankaMap highlighted={highlightedDistricts} />
+                      </div>
                       <div className="text-xs text-gray-400 mt-2">Tip: If a place is not recognized, refine the place name (e.g. &quot;Nuwara Eliya&quot;).</div>
                     </div>
                   </div>
@@ -403,12 +405,12 @@ export default function PlanTour() {
 
               {/* Hotels */}
               <div>
-                <label className="block text-sm text-gray-200">7. Do you need Hotels & accommodation details also?</label>
-                <div className="flex gap-4 mt-2">
-                  <label className={`px-4 py-2 rounded cursor-pointer ${needHotels==='yes' ? "bg-blue-600/40" : "bg-white/6"}`}>
+                <label className="block text-xs sm:text-sm text-gray-200">7. Do you need Hotels & accommodation details also?</label>
+                <div className="flex gap-3 sm:gap-4 mt-2">
+                  <label className={`px-3 sm:px-4 py-2 text-xs sm:text-sm rounded cursor-pointer ${needHotels==='yes' ? "bg-blue-600/40" : "bg-white/6"}`}>
                     <input type="radio" name="needHotels" value="yes" checked={needHotels==='yes'} onChange={()=>setNeedHotels("yes")} className="mr-2" /> Yes
                   </label>
-                  <label className={`px-4 py-2 rounded cursor-pointer ${needHotels==='no' ? "bg-blue-600/40" : "bg-white/6"}`}>
+                  <label className={`px-3 sm:px-4 py-2 text-xs sm:text-sm rounded cursor-pointer ${needHotels==='no' ? "bg-blue-600/40" : "bg-white/6"}`}>
                     <input type="radio" name="needHotels" value="no" checked={needHotels==='no'} onChange={()=>setNeedHotels("no")} className="mr-2" /> No
                   </label>
                 </div>
@@ -416,15 +418,15 @@ export default function PlanTour() {
 
               {/* Vehicle selection */}
               <div>
-                <label className="block text-sm text-gray-200 mb-2">8. Select Your Preferred vehicle type</label>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <label className="block text-xs sm:text-sm text-gray-200 mb-2">8. Select Your Preferred vehicle type</label>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-3">
                   {VEHICLES.map((v) => (
-                    <label key={v.id} className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer border ${vehicle===v.id ? "border-blue-500 bg-blue-600/20" : "border-white/6 bg-white/4"}`}>
+                    <label key={v.id} className={`flex items-center gap-2 sm:gap-3 p-2 sm:p-3 rounded-lg text-xs sm:text-sm cursor-pointer border ${vehicle===v.id ? "border-blue-500 bg-blue-600/20" : "border-white/6 bg-white/4"}`}>
                       <input type="radio" name="vehicle" value={v.id} checked={vehicle===v.id} onChange={() => setVehicle(v.id)} className="w-4 h-4" />
-                      <VehicleIcon type={v.icon} />
-                      <div>
-                        <div className="font-medium">{v.title}</div>
-                        <div className="text-sm text-gray-300">{v.pax}</div>
+                      <Image src={v.iconSrc} alt={v.title} width={48} height={48} className="w-8 sm:w-12 h-8 sm:h-12 object-contain" />
+                      <div className="min-w-0">
+                        <div className="font-medium text-xs sm:text-sm">{v.title}</div>
+                        <div className="text-xs text-gray-300">{v.pax}</div>
                       </div>
                     </label>
                   ))}
@@ -433,58 +435,58 @@ export default function PlanTour() {
 
               {/* Activities */}
               <div>
-                <label className="block text-sm text-gray-200 mb-2">9. What activities do you like to do?</label>
+                <label className="block text-xs sm:text-sm text-gray-200 mb-2">9. What activities do you like to do?</label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {ACTIVITIES.map((act) => (
-                    <label key={act} className="flex items-center gap-2 bg-white/6 p-2 rounded">
+                    <label key={act} className="flex items-center gap-2 bg-white/6 p-2 rounded text-xs sm:text-sm">
                       <input type="checkbox" checked={activities[act]} onChange={(e)=> setActivities((prev)=> ({...prev, [act]: e.target.checked}))} />
-                      <span className="text-sm">{act}</span>
+                      <span>{act}</span>
                     </label>
                   ))}
                 </div>
               </div>
 
               {/* Contact & Email */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                 <div>
-                  <label className="block text-sm text-gray-200">10A. Contact Number (WhatsApp) <span className="text-rose-400">*</span></label>
+                  <label className="block text-xs sm:text-sm text-gray-200">10A. Contact Number (WhatsApp) <span className="text-rose-400">*</span></label>
                   <div className="mt-1 flex gap-2">
-                    <select value={contactCode} onChange={(e) => setContactCode(e.target.value)} className="bg-white/10 backdrop-blur px-3 py-2 rounded border border-white/10 min-w-[110px]">
+                    <select value={contactCode} onChange={(e) => setContactCode(e.target.value)} className="bg-transparent px-2 sm:px-3 py-2 rounded text-xs sm:text-sm border border-white/20 min-w-[90px] sm:min-w-[110px] text-white focus:ring-2 focus:ring-blue-500">
                       {COUNTRY_CODES.map((c) => (
-                        <option key={c.code} value={c.code}>{c.label}</option>
+                        <option key={c.code} value={c.code} className="bg-gray-900 text-white">{c.label}</option>
                       ))}
                     </select>
-                    <input value={contact} onChange={(e)=> setContact(e.target.value)} className="flex-1 bg-white/6 px-3 py-2 rounded" placeholder="7x xxx xxxx" />
+                    <input value={contact} onChange={(e)=> setContact(e.target.value)} className="flex-1 bg-white/6 px-3 py-2 text-sm rounded" placeholder="7x xxx xxxx" />
                   </div>
-                  {errors.contact && <div className="text-rose-400 text-sm mt-1">{errors.contact}</div>}
+                  {errors.contact && <div className="text-rose-400 text-xs sm:text-sm mt-1">{errors.contact}</div>}
                 </div>
 
                 <div>
-                  <label className="block text-sm text-gray-200">10B. Email <span className="text-rose-400">*</span></label>
-                  <input value={email} onChange={(e)=> setEmail(e.target.value)} className="mt-1 w-full bg-white/6 px-3 py-2 rounded" placeholder="name@example.com" />
-                  {errors.email && <div className="text-rose-400 text-sm mt-1">{errors.email}</div>}
+                  <label className="block text-xs sm:text-sm text-gray-200">10B. Email <span className="text-rose-400">*</span></label>
+                  <input value={email} onChange={(e)=> setEmail(e.target.value)} className="mt-1 w-full bg-white/6 px-3 py-2 text-sm rounded" placeholder="name@example.com" />
+                  {errors.email && <div className="text-rose-400 text-xs sm:text-sm mt-1">{errors.email}</div>}
                 </div>
               </div>
 
               {/* Buttons */}
-              <div className="flex gap-3 mt-4">
-                <button type="button" onClick={clearForm} className="px-4 py-2 rounded bg-white/6 hover:opacity-90">Clear</button>
-                <button type="submit" className="px-4 py-2 rounded bg-gradient-to-r from-cyan-500 to-blue-600 font-semibold">Submit Request</button>
+              <div className="flex gap-2 sm:gap-3 mt-4">
+                <button type="button" onClick={clearForm} className="px-3 sm:px-4 py-2 text-sm rounded bg-white/6 hover:opacity-90">Clear</button>
+                <button type="submit" className="flex-1 px-3 sm:px-4 py-2 text-sm rounded bg-gradient-to-r from-cyan-500 to-blue-600 font-semibold">Submit Request</button>
               </div>
             </form>
           </div>
 
           {/* RIGHT / SUMMARY & MAP */}
-          <div className="bg-white/5 p-6 rounded-2xl shadow-lg space-y-4">
-            <div className="flex items-center gap-3">
-              <Image src="/logo.png" alt="logo" width={64} height={64} />
+          <div className="bg-white/5 p-4 sm:p-6 rounded-2xl shadow-lg space-y-4">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <Image src="/logo.png" alt="logo" width={64} height={64} className="w-12 sm:w-16 h-12 sm:h-16" />
               <div>
-                <div className="font-bold">Pearl Transit Tours & Travels</div>
-                <div className="text-sm text-gray-300">Plan Request Summary</div>
+                <div className="font-bold text-sm sm:text-base">Pearl Transit Tours & Travels</div>
+                <div className="text-xs sm:text-sm text-gray-300">Plan Request Summary</div>
               </div>
             </div>
 
-            <div className="text-sm space-y-2">
+            <div className="text-xs sm:text-sm space-y-1 sm:space-y-2">
               <div><span className="text-gray-300">Name:</span> <span className="font-medium">{name || "-"}</span></div>
               <div><span className="text-gray-300">Country:</span> <span className="font-medium">{COUNTRIES.find(c=>c.code===country)?.label || "-"}</span></div>
               <div><span className="text-gray-300">Adults / Children:</span> <span className="font-medium">{adults} / {children}</span></div>
@@ -493,15 +495,16 @@ export default function PlanTour() {
               <div><span className="text-gray-300">Places:</span> <span className="font-medium">{places.length || "-"}</span></div>
               <div><span className="text-gray-300">Vehicle:</span> <span className="font-medium">{VEHICLES.find(v=>v.id===vehicle)?.title}</span></div>
               <div><span className="text-gray-300">Contact:</span> <span className="font-medium">{contact ? `${contactCode} ${contact}` : "-"}</span></div>
-              <div><span className="text-gray-300">Email:</span> <span className="font-medium">{email || "-"}</span></div>
-              <div><span className="text-gray-300">Places:</span> <span className="font-medium">{places.length ? places.join(", ") : "-"}</span></div>
+              <div><span className="text-gray-300">Email:</span> <span className="font-medium text-xs sm:text-sm break-all">{email || "-"}</span></div>
+              <div><span className="text-gray-300">Places:</span> <span className="font-medium text-xs">{places.length ? places.join(", ") : "-"}</span></div>
             </div>
 
             <div className="pt-2">
-              <h4 className="text-sm text-gray-200 mb-2">Map Preview</h4>
-              <div className="rounded bg-black/20 p-3">
+              <h4 className="text-xs sm:text-sm text-gray-200 mb-2">Map Preview</h4>
+              <div className="rounded bg-black/20 p-1 sm:p-2 bg-[url('/lkmap.png')] bg-cover bg-center">
                 <SriLankaMap highlighted={highlightedDistricts} small />
               </div>
+              <div className="text-xs text-gray-400 mt-1">Tip: Click on map to see coordinates for fine-tuning</div>
             </div>
 
             <div className="text-xs text-gray-400">We&#39;ll use this information to propose a personalized itinerary and quote.</div>
@@ -538,81 +541,92 @@ export default function PlanTour() {
    Small helper components
    --------------------------- */
 
-function VehicleIcon({ type }: { type?: string }) {
-  // simple inline icons
-  if (!type || type.startsWith("car")) {
-    return (
-      <svg className="w-10 h-10 text-white/90" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-        <rect x="2" y="7" width="20" height="7" rx="1.5" strokeWidth="1.5"/>
-        <circle cx="7" cy="17.5" r="1.5" strokeWidth="1.5"/>
-        <circle cx="17" cy="17.5" r="1.5" strokeWidth="1.5"/>
-      </svg>
-    );
-  }
-  // van
-  return (
-    <svg className="w-10 h-10 text-white/90" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-      <rect x="2" y="6" width="18" height="8" rx="1.2" strokeWidth="1.5"/>
-      <circle cx="7" cy="16.5" r="1.5" strokeWidth="1.5"/>
-      <circle cx="17" cy="16.5" r="1.5" strokeWidth="1.5"/>
-    </svg>
-  );
-}
-
 /* ---------------------------
    Simplified Sri Lanka SVG map
    - IDs correspond to district keys used above
    - This is a simplified illustrative map. You can replace with a proper district-accurate SVG paths.
    --------------------------- */
 function SriLankaMap({ highlighted, small = false }: { highlighted: Record<string, boolean>, small?: boolean }) {
-  // simplified rectangles as placeholders for districts
-  // In production: replace with a proper district-accurate SVG paths.
+  // Coordinates for large map - adjust these to align with lkmap.png in main form
+  const LARGE_MAP_POINTS: Record<string, { cx: number; cy: number; label: string }> = {
+    jaffna: { cx: 50, cy: 17, label: "Jaffna" },
+    trincomalee: { cx: 120, cy: 105, label: "Trinco" },
+    anuradhapura: { cx: 80, cy: 115, label: "Anuradhapura" },
+    polonnaruwa: { cx: 118, cy: 148, label: "Polonnaruwa" },
+    kandy: { cx: 100, cy: 190, label: "Kandy" },
+    matale: { cx: 90, cy: 168, label: "Matale" },
+    nuwara_eliya: { cx: 100, cy: 209, label: "Nuwara Eliya" },
+    badulla: { cx: 110, cy: 223, label: "Badulla" },
+    colombo: { cx: 48, cy: 227, label: "Colombo" },
+    gampaha: { cx: 43, cy: 203, label: "Gampaha" },
+    kalutara: { cx: 55, cy: 244, label: "Kalutara" },
+    galle: { cx: 70, cy: 275, label: "Galle" },
+    matara: { cx: 104, cy: 272, label: "Matara" },
+    ampara: { cx: 170, cy: 203, label: "Ampara" },
+    batticaloa: { cx: 150, cy: 160, label: "Batticaloa" },
+    kegalle: { cx: 65, cy: 215, label: "Kegalle" },
+    ratnapura: { cx: 85, cy: 247, label: "Ratnapura" },
+    kurunegala: { cx: 65, cy: 175, label: "Kurunegala" },
+  };
+
+  // Coordinates for small map - adjust these independently to align with lkmap.png in summary
+  const SMALL_MAP_POINTS: Record<string, { cx: number; cy: number; label: string }> = {
+    jaffna: { cx: 80, cy: 7, label: "Jaffna" },
+    trincomalee: { cx: 160, cy: 95, label: "Trinco" },
+    anuradhapura: { cx: 110, cy: 115, label: "Anuradhapura" },
+    polonnaruwa: { cx: 158, cy: 148, label: "Polonnaruwa" },
+    kandy: { cx: 130, cy: 190, label: "Kandy" },
+    matale: { cx: 125, cy: 168, label: "Matale" },
+    nuwara_eliya: { cx: 135, cy: 219, label: "Nuwara Eliya" },
+    badulla: { cx: 160, cy: 233, label: "Badulla" },
+    colombo: { cx: 70, cy: 237, label: "Colombo" },
+    gampaha: { cx: 65, cy: 213, label: "Gampaha" },
+    kalutara: { cx: 75, cy: 264, label: "Kalutara" },
+    galle: { cx: 90, cy: 295, label: "Galle" },
+    matara: { cx: 118, cy: 295, label: "Matara" },
+    ampara: { cx: 198, cy: 203, label: "Ampara" },
+    batticaloa: { cx: 180, cy: 170, label: "Batticaloa" },
+    kegalle: { cx: 100, cy: 215, label: "Kegalle" },
+    ratnapura: { cx: 110, cy: 257, label: "Ratnapura" },
+    kurunegala: { cx: 90, cy: 175, label: "Kurunegala" },
+  };
+
+  const DISTRICT_POINTS = small ? SMALL_MAP_POINTS : LARGE_MAP_POINTS;
+
   return (
     <svg viewBox="0 0 200 300" className={`${small ? "w-56" : "w-full"} h-auto rounded`} xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <style>{`.district { stroke:#c0c0c0; stroke-width:1 }`}</style>
+        <style>{`.district-label { fill:#cbd5e1; font-size:7px; font-family: Arial, sans-serif; }`}</style>
       </defs>
 
-      {/* Northern cluster */}
-      <g id="north" transform="translate(40,10)">
-        <rect id="jaffna" x="35" y="0" width="30" height="20" rx="2" fill={districtColor(highlighted, "jaffna")} className="district" />
-        <rect id="trincomalee" x="70" y="40" width="30" height="20" rx="2" fill={districtColor(highlighted, "trincomalee")} className="district" />
-        <rect id="anuradhapura" x="40" y="70" width="40" height="18" rx="2" fill={districtColor(highlighted, "anuradhapura")} className="district" />
-        <rect id="polonnaruwa" x="90" y="80" width="35" height="16" rx="2" fill={districtColor(highlighted, "polonnaruwa")} className="district" />
-      </g>
-
-      {/* Central */}
-      <g id="central" transform="translate(10,110)">
-        <rect id="kandy" x="40" y="10" width="40" height="20" rx="2" fill={districtColor(highlighted, "kandy")} className="district" />
-        <rect id="matale" x="10" y="40" width="40" height="16" rx="2" fill={districtColor(highlighted, "matale")} className="district" />
-        <rect id="nuwara_eliya" x="60" y="50" width="40" height="18" rx="2" fill={districtColor(highlighted, "nuwara_eliya")} className="district" />
-        <rect id="badulla" x="90" y="80" width="40" height="18" rx="2" fill={districtColor(highlighted, "badulla")} className="district" />
-      </g>
-
-      {/* West / South */}
-      <g id="south" transform="translate(10,180)">
-        <rect id="colombo" x="0" y="0" width="35" height="18" rx="2" fill={districtColor(highlighted, "colombo")} className="district" />
-        <rect id="galle" x="60" y="30" width="40" height="18" rx="2" fill={districtColor(highlighted, "galle")} className="district" />
-        <rect id="matara" x="100" y="40" width="40" height="16" rx="2" fill={districtColor(highlighted, "matara")} className="district" />
-        <rect id="kalutara" x="20" y="30" width="30" height="12" rx="2" fill={districtColor(highlighted, "kalutara")} className="district" />
-      </g>
-
-      {/* South-East / East */}
-      <g id="east" transform="translate(110,120)">
-        <rect id="ampara" x="20" y="10" width="40" height="18" rx="2" fill={districtColor(highlighted, "ampara")} className="district" />
-        <rect id="batticaloa" x="20" y="40" width="40" height="16" rx="2" fill={districtColor(highlighted, "batticaloa")} className="district" />
-      </g>
-
-      {/* Others */}
-      <g id="others" transform="translate(120,30)">
-        <rect id="kegalle" x="0" y="0" width="30" height="14" rx="2" fill={districtColor(highlighted, "kegalle")} className="district" />
-        <rect id="ratnapura" x="0" y="20" width="30" height="14" rx="2" fill={districtColor(highlighted, "ratnapura")} className="district" />
-        <rect id="kurunegala" x="0" y="40" width="30" height="14" rx="2" fill={districtColor(highlighted, "kurunegala")} className="district" />
-      </g>
-
       {/* Legend */}
-      <rect x="4" y="270" width="12" height="8" rx="1" fill="#1e90ff" />
-      <text x="20" y="276" fontSize="6" fill="#cbd5e1">Selected District</text>
+      <circle cx="10" cy="286" r="4" fill="#4c71c9ff" />
+      <text x="20" y="288" fontSize="6" fill="#cbd5e1">Selected District</text>
+
+      {/* Lightning dots and labels */}
+      <g id="points">
+        {Object.entries(DISTRICT_POINTS).map(([id, { cx, cy, label }]) => {
+          const isOn = highlighted[id];
+          return (
+            <g key={id}>
+              {/* base faint dot for context */}
+              <circle cx={cx} cy={cy} r={2} fill="#1f2937" opacity={0.5} />
+              {isOn && (
+                <>
+                  <circle cx={cx} cy={cy} r={3} fill="#679eeaff">
+                    <animate attributeName="r" values="2;6;2" dur="1.2s" repeatCount="indefinite" />
+                    <animate attributeName="opacity" values="0.3;1;0" dur="1.2s" repeatCount="indefinite" />
+                  </circle>
+                  <circle cx={cx} cy={cy} r={1.5} fill="#0803ffff">
+                    <animate attributeName="opacity" values="1;0.4;1" dur="0.8s" repeatCount="indefinite" />
+                  </circle>
+                </>
+              )}
+              <text className="district-label" x={cx} y={cy - 6} textAnchor="middle">{label}</text>
+            </g>
+          );
+        })}
+      </g>
     </svg>
   );
 }
