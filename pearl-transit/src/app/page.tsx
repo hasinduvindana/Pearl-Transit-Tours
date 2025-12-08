@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import type { SVGProps } from 'react';
 
@@ -70,6 +71,7 @@ const slides = [
 ];
 
 export default function Home() {
+  const router = useRouter();
   const [current, setCurrent] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
   const [viewImage, setViewImage] = useState<string | null>(null);
@@ -252,21 +254,26 @@ export default function Home() {
 
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-4">
           {[
-            { img: "/dest1.jpg", name: "Galle" },
-            { img: "/dest2.jpg", name: "Nuwara Eliya" },
-            { img: "/dest3.jpg", name: "Mirissa" },
-            { img: "/dest4.jpg", name: "Ahungalla" },
-            { img: "/dest5.jpg", name: "Bentota" }, 
-            { img: "/dest6.jpg", name: "Ella" },
-            { img: "/dest7.jpg", name: "Sigiriya" },
-            { img: "/dest8.jpg", name: "Colombo" },
-            { img: "/dest9.jpg", name: "Kandy" },
-            { img: "/dest10.jpg", name: "Arugambay" },
+            { img: "/dest1.jpg", name: "Galle", slug: "/Destinations/Galle" },
+            { img: "/dest2.jpg", name: "Nuwara Eliya", slug: "/destinations/nuwara-eliya" },
+            { img: "/dest3.jpg", name: "Mirissa", slug: "/destinations/mirissa" },
+            { img: "/dest4.jpg", name: "Ahungalla", slug: "/destinations/ahungalla" },
+            { img: "/dest5.jpg", name: "Bentota", slug: "/destinations/bentota" }, 
+            { img: "/dest6.jpg", name: "Ella", slug: "/destinations/ella" },
+            { img: "/dest7.jpg", name: "Sigiriya", slug: "/destinations/sigiriya" },
+            { img: "/dest8.jpg", name: "Colombo", slug: "/destinations/colombo" },
+            { img: "/dest9.jpg", name: "Kandy", slug: "/destinations/kandy" },
+            { img: "/dest10.jpg", name: "Arugambay", slug: "/destinations/arugambay" },
           ].map((d, i) => (
-            <div key={i} className="bg-white/10 rounded-xl shadow-lg p-4 hover:scale-105 transition cursor-pointer">
+            <button
+              key={i}
+              type="button"
+              onClick={() => router.push(d.slug)}
+              className="bg-white/10 rounded-xl shadow-lg p-4 hover:scale-105 transition cursor-pointer text-left"
+            >
               <Image src={d.img} alt={d.name} width={500} height={300} className="rounded-lg" />
               <h3 className="text-2xl font-bold mt-4 text-center">{d.name}</h3>
-            </div>
+            </button>
           ))}
         </div>
       </section>
