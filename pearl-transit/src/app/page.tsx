@@ -256,14 +256,14 @@ export default function Home() {
           {[
             { img: "/dest1.jpg", name: "Galle", slug: "/Destinations/Galle" },
             { img: "/dest2.jpg", name: "Nuwara Eliya", slug: "/Destinations/Nuwaraeliya" },
-            { img: "/dest3.jpg", name: "Mirissa", slug: "/destinations/mirissa" },
-            { img: "/dest4.jpg", name: "Ahungalla", slug: "/destinations/ahungalla" },
-            { img: "/dest5.jpg", name: "Bentota", slug: "/destinations/bentota" }, 
-            { img: "/dest6.jpg", name: "Ella", slug: "/destinations/ella" },
-            { img: "/dest7.jpg", name: "Sigiriya", slug: "/destinations/sigiriya" },
-            { img: "/dest8.jpg", name: "Colombo", slug: "/destinations/colombo" },
-            { img: "/dest9.jpg", name: "Kandy", slug: "/destinations/kandy" },
-            { img: "/dest10.jpg", name: "Arugambay", slug: "/destinations/arugambay" },
+            { img: "/dest3.jpg", name: "Mirissa", slug: "/Destinations/Mirissa" },
+            { img: "/dest4.jpg", name: "Ahungalla", slug: "/Destinations/Ahungalla" },
+            { img: "/dest5.jpg", name: "Bentota", slug: "/Destinations/Bentota" }, 
+            { img: "/dest6.jpg", name: "Ella", slug: "/Destinations/Ella" },
+            { img: "/dest7.jpg", name: "Sigiriya", slug: "/Destinations/Sigiriya" },
+            { img: "/dest8.jpg", name: "Colombo", slug: "/Destinations/Colombo" },
+            { img: "/dest9.jpg", name: "Kandy", slug: "/Destinations/Kandy" },
+            { img: "/dest10.jpg", name: "Arugambay", slug: "/Destinations/Arugambay" },
           ].map((d, i) => (
             <button
               key={i}

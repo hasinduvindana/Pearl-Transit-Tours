@@ -9,38 +9,38 @@ import { ArrowLeft, X, ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from "lucide
 // ------------------------
 const places = [
   {
-    name: "Mirissa Beach",
-    description: "A stunning crescent-shaped beach with golden sand and turquoise waters.",
-    image: "/mirissa/mirissa-beach.jpg",
+    name: "Ahungalla Beach",
+    description: "A pristine sandy beach perfect for swimming and sunbathing.",
+    image: "/ahungalla/ahungalla-beach.jpg",
   },
   {
-    name: "Whale Watching",
-    description: "Experience the thrill of spotting blue whales and dolphins in their natural habitat.",
-    image: "/mirissa/whale-watching.jpg",
-  },
-  {
-    name: "Coconut Tree Hill",
-    description: "An iconic viewpoint offering breathtaking panoramic ocean views.",
-    image: "/mirissa/coconut-tree-hill.jpeg",
-  },
-  {
-    name: "Parrot Rock",
-    description: "A small rocky island perfect for cliff jumping and snorkeling adventures.",
-    image: "/mirissa/parrot-rock.jpg",
+    name: "Turtle Hatchery",
+    description: "Rescue and rehabilitation center for endangered sea turtles.",
+    image: "/ahungalla/turtle-hatchery.jpg",
   },   
   {
-    name: "Surfing Spots",
-    description: "Perfect waves for both beginner and experienced surfers.",
-    image: "/mirissa/surfing.jpg",
-  },  
+    name: "Local Markets",
+    description: "Discover fresh seafood and local produce at vibrant fish markets.",
+    image: "/ahungalla/markets.jpg",
+  },
   {
-    name: "Beach Restaurants",
-    description: "Enjoy fresh seafood and local cuisine with your feet in the sand.",
-    image: "/mirissa/beach-restaurants.jpg",
-  },  
+    name: "Madu River",
+    description: "Take a serene boat safari through mangroves, islets, and wildlife-rich waterways.",
+    image: "/ahungalla/madu-river-boat-safari.jpg",
+  },
+  {
+    name: "Mask Museum",
+    description: "Explore Sri Lanka's traditional masks and craftsmanship in nearby Ambalangoda.",
+    image: "/ahungalla/mask-museum.jpg",
+  },
+  {
+    name: "Beachfront Resorts",
+    description: "Stay at Heritance, RIU, and other Ahungalla resorts with oceanfront views.",
+    image: "/ahungalla/hotels.jpg",
+  },     
 ];
 
-export default function Mirissa() {
+export default function Ahungalla() {
   const [fullscreen, setFullscreen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [zoom, setZoom] = useState(1);
@@ -81,7 +81,7 @@ export default function Mirissa() {
         transition={{ duration: 1 }}
         className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-4 sm:mb-6 pt-12 sm:pt-0"
       >
-        Mirissa
+        Ahungalla
       </motion.h1>
 
       {/* Banner Image */}
@@ -92,8 +92,8 @@ export default function Mirissa() {
         className="w-full flex justify-center px-0 sm:px-2"
       >
         <Image
-          src="/dest3.jpg"
-          alt="Mirissa Main"
+          src="/dest4.jpg"
+          alt="Ahungalla Main"
           width={600}
           height={300}
           className="rounded-lg sm:rounded-xl shadow-lg w-full h-auto max-w-2xl"
@@ -102,15 +102,15 @@ export default function Mirissa() {
 
       {/* Description */}
       <p className="text-gray-300 text-sm sm:text-base md:text-lg lg:text-xl mt-4 sm:mt-6 leading-relaxed text-justify max-w-4xl mx-auto">
-        Mirissa is a small coastal town on the southern coast of Sri Lanka, known for its pristine beaches, 
-        world-class whale watching, and laid-back atmosphere. This tropical paradise offers the perfect blend 
-        of relaxation and adventure, with stunning sunsets, excellent surfing conditions, and vibrant nightlife. 
-        Whether you&apos;re seeking underwater exploration or simply want to unwind on golden sands, Mirissa 
-        promises an unforgettable beach experience.
+        Ahungalla is a charming coastal village on the southern coast of Sri Lanka, known for its unspoiled 
+        beaches, excellent diving opportunities, and marine conservation efforts. This peaceful destination offers 
+        the perfect retreat for beach lovers, adventure seekers, and marine enthusiasts. With its friendly locals, 
+        fresh seafood, and pristine natural beauty, Ahungalla provides an authentic Sri Lankan beach experience 
+        away from the crowds.
       </p>
 
       {/* Popular Places Section */}
-      <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mt-8 sm:mt-10 mb-4 text-center px-2">Most Popular Places in Mirissa</h2>
+      <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mt-8 sm:mt-10 mb-4 text-center px-2">Most Popular Places in Ahungalla</h2>
 
       {/* Horizontal Scroll Gallery - Mobile Optimized */}
       <div className="flex overflow-x-auto space-x-3 sm:space-x-6 py-4 scrollbar-hide px-2 sm:px-0">
