@@ -255,7 +255,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-4">
           {[
             { img: "/dest1.jpg", name: "Galle", slug: "/Destinations/Galle" },
-            { img: "/dest2.jpg", name: "Nuwara Eliya", slug: "/Destinations/Nuwaraeliya" },
+            { img: "/dest2.jpg", name: "Nuwara Eliya", slug: "/Destinations/NuwaraEliya" },
             { img: "/dest3.jpg", name: "Mirissa", slug: "/Destinations/Mirissa" },
             { img: "/dest4.jpg", name: "Ahungalla", slug: "/Destinations/Ahungalla" },
             { img: "/dest5.jpg", name: "Bentota", slug: "/Destinations/Bentota" }, 
@@ -264,6 +264,9 @@ export default function Home() {
             { img: "/dest8.jpg", name: "Colombo", slug: "/Destinations/Colombo" },
             { img: "/dest9.jpg", name: "Kandy", slug: "/Destinations/Kandy" },
             { img: "/dest10.jpg", name: "Arugambay", slug: "/Destinations/Arugambay" },
+            { img: "/dest11.jpg", name: "Pinnawala", slug: "/Destinations/Pinnawala" },
+            { img: "/dest12.jpg", name: "Udawalawa", slug: "/Destinations/Udawalawa" },
+            { img: "/dest13.jpg", name: "Sinharaja Rainforest", slug: "/Destinations/Sinharaja" },
           ].map((d, i) => (
             <button
               key={i}
