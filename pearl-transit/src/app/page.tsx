@@ -255,7 +255,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-4">
           {[
             { img: "/dest1.jpg", name: "Galle", slug: "/Destinations/Galle" },
-            { img: "/dest2.jpg", name: "Nuwara Eliya", slug: "/destinations/nuwara-eliya" },
+            { img: "/dest2.jpg", name: "Nuwara Eliya", slug: "/Destinations/Nuwaraeliya" },
             { img: "/dest3.jpg", name: "Mirissa", slug: "/destinations/mirissa" },
             { img: "/dest4.jpg", name: "Ahungalla", slug: "/destinations/ahungalla" },
             { img: "/dest5.jpg", name: "Bentota", slug: "/destinations/bentota" }, 
