@@ -1,7 +1,13 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { ArrowLeft, X, CheckCircle } from "lucide-react";
+
+declare global {
+  interface Window {
+    google: typeof google;
+  }
+}
 
 const inputClass = "w-full bg-white/10 border border-white/20 text-white placeholder-gray-400 px-4 py-3 rounded-lg focus:outline-none focus:border-blue-500/50 focus:bg-white/15 transition";
 const selectClass = "w-full bg-white/10 border border-white/20 text-white px-4 py-3 rounded-lg focus:outline-none focus:border-blue-500/50 transition";
@@ -36,6 +42,13 @@ export default function QuickTaxi() {
   const [popup, setPopup] = useState(false);
   const [popupMsg1, setPopupMsg1] = useState("");
   const [popupMsg2, setPopupMsg2] = useState("");
+
+  const [imLocationLoading, setImLocationLoading] = useState(false);
+  const [fuLocationLoading, setFuLocationLoading] = useState(false);
+  const [locationAccuracy, setLocationAccuracy] = useState<number | null>(null);
+
+  const imLocationRef = useRef<HTMLInputElement>(null);
+  const fuLocationRef = useRef<HTMLInputElement>(null);
 
   const countries = ["Sri Lanka", "India", "UK", "USA", "Australia", "Germany", "France", "Japan"];
   const countryCodes = [
@@ -77,6 +90,130 @@ export default function QuickTaxi() {
     setFuPlaces([...fuPlaces, newPlace]);
     setNewPlace("");
   };
+
+  const getCurrentLocation = (isImmediate: boolean) => {
+    if (isImmediate) {
+      setImLocationLoading(true);
+    } else {
+      setFuLocationLoading(true);
+    }
+    setLocationAccuracy(null);
+
+    if (!navigator.geolocation) {
+      alert("Geolocation is not supported by your browser");
+      if (isImmediate) setImLocationLoading(false);
+      else setFuLocationLoading(false);
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude, accuracy } = position.coords;
+        setLocationAccuracy(accuracy);
+
+        // Reverse geocoding using Google Maps API
+        if (window.google && window.google.maps) {
+          const geocoder = new window.google.maps.Geocoder();
+          const latlng = { lat: latitude, lng: longitude };
+
+          geocoder.geocode({ location: latlng }, (results, status) => {
+            if (status === "OK" && results && results[0]) {
+              const address = results[0].formatted_address;
+              if (isImmediate) {
+                setImLocation(address);
+                setImLocationLoading(false);
+              } else {
+                setFuLocation(address);
+                setFuLocationLoading(false);
+              }
+            } else {
+              const fallbackAddress = `${latitude.toFixed(6)}, ${longitude.toFixed(6)}`;
+              if (isImmediate) {
+                setImLocation(fallbackAddress);
+                setImLocationLoading(false);
+              } else {
+                setFuLocation(fallbackAddress);
+                setFuLocationLoading(false);
+              }
+            }
+          });
+        } else {
+          // Fallback to coordinates if Google Maps not loaded
+          const fallbackAddress = `${latitude.toFixed(6)}, ${longitude.toFixed(6)}`;
+          if (isImmediate) {
+            setImLocation(fallbackAddress);
+            setImLocationLoading(false);
+          } else {
+            setFuLocation(fallbackAddress);
+            setFuLocationLoading(false);
+          }
+        }
+      },
+      (error) => {
+        console.error("Error getting location:", error);
+        let errorMsg = "Unable to retrieve your location";
+        if (error.code === 1) errorMsg = "Location permission denied";
+        else if (error.code === 2) errorMsg = "Location unavailable";
+        else if (error.code === 3) errorMsg = "Location request timeout";
+        
+        alert(errorMsg);
+        if (isImmediate) setImLocationLoading(false);
+        else setFuLocationLoading(false);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0,
+      }
+    );
+  };
+
+  useEffect(() => {
+    const loadGoogleMaps = () => {
+      if (typeof window !== "undefined" && !window.google) {
+        const script = document.createElement("script");
+        script.src = `https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=places`;
+        script.async = true;
+        script.defer = true;
+        script.onload = initAutocomplete;
+        document.head.appendChild(script);
+      } else if (window.google) {
+        initAutocomplete();
+      }
+    };
+
+    const initAutocomplete = () => {
+      if (!window.google) return;
+
+      if (imLocationRef.current) {
+        const imAutocomplete = new window.google.maps.places.Autocomplete(imLocationRef.current, {
+          types: ["geocode"],
+          componentRestrictions: { country: "lk" },
+        });
+        imAutocomplete.addListener("place_changed", () => {
+          const place = imAutocomplete.getPlace();
+          if (place.formatted_address) {
+            setImLocation(place.formatted_address);
+          }
+        });
+      }
+
+      if (fuLocationRef.current) {
+        const fuAutocomplete = new window.google.maps.places.Autocomplete(fuLocationRef.current, {
+          types: ["geocode"],
+          componentRestrictions: { country: "lk" },
+        });
+        fuAutocomplete.addListener("place_changed", () => {
+          const place = fuAutocomplete.getPlace();
+          if (place.formatted_address) {
+            setFuLocation(place.formatted_address);
+          }
+        });
+      }
+    };
+
+    loadGoogleMaps();
+  }, [activeTab]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0a1d3b] via-black to-gray-900 text-white pt-24 pb-10 px-4">
@@ -126,7 +263,23 @@ export default function QuickTaxi() {
               </div>
               <div>
                 <label className="block text-sm font-semibold mb-2 text-blue-300">Pickup Location *</label>
-                <input type="text" className={inputClass} placeholder="Your location" value={imLocation} onChange={(e) => setImLocation(e.target.value)} />
+                <div className="flex gap-2">
+                  <input ref={imLocationRef} type="text" className={inputClass} placeholder="Search location..." value={imLocation} onChange={(e) => setImLocation(e.target.value)} />
+                  <button
+                    type="button"
+                    onClick={() => getCurrentLocation(true)}
+                    disabled={imLocationLoading}
+                    className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 px-4 py-3 rounded-lg font-semibold whitespace-nowrap transition min-w-[120px]"
+                  >
+                    {imLocationLoading ? "Locating..." : "📍 Current"}
+                  </button>
+                </div>
+                {imLocationLoading && (
+                  <p className="text-xs text-blue-300 mt-1 animate-pulse">🔍 Detecting your location with high accuracy...</p>
+                )}
+                {locationAccuracy !== null && !imLocationLoading && activeTab === "immediate" && (
+                  <p className="text-xs text-green-400 mt-1">✓ Location accuracy: ±{Math.round(locationAccuracy)}m</p>
+                )}
               </div>
               <div>
                 <label className="block text-sm font-semibold mb-2 text-blue-300">Number of Passengers *</label>
@@ -204,7 +357,23 @@ export default function QuickTaxi() {
             </div>
             <div>
               <label className="block text-sm font-semibold mb-2 text-green-300">Pickup Location *</label>
-              <input type="text" className={inputClass} placeholder="Your location" value={fuLocation} onChange={(e) => setFuLocation(e.target.value)} />
+              <div className="flex gap-2">
+                <input ref={fuLocationRef} type="text" className={inputClass} placeholder="Search location..." value={fuLocation} onChange={(e) => setFuLocation(e.target.value)} />
+                <button
+                  type="button"
+                  onClick={() => getCurrentLocation(false)}
+                  disabled={fuLocationLoading}
+                  className="bg-green-600 hover:bg-green-700 disabled:bg-gray-600 px-4 py-3 rounded-lg font-semibold whitespace-nowrap transition min-w-[120px]"
+                >
+                  {fuLocationLoading ? "Locating..." : "📍 Current"}
+                </button>
+              </div>
+              {fuLocationLoading && (
+                <p className="text-xs text-green-300 mt-1 animate-pulse">🔍 Detecting your location with high accuracy...</p>
+              )}
+              {locationAccuracy !== null && !fuLocationLoading && activeTab === "future" && (
+                <p className="text-xs text-green-400 mt-1">✓ Location accuracy: ±{Math.round(locationAccuracy)}m</p>
+              )}
             </div>
             <div>
               <label className="block text-sm font-semibold mb-2 text-green-300">Preferred Vehicle *</label>
