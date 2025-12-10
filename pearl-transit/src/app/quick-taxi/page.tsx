@@ -17,6 +17,7 @@ export default function QuickTaxi() {
   const [imDesc, setImDesc] = useState("");
   const [imPassengers, setImPassengers] = useState("");
   const [imWhatsapp, setImWhatsapp] = useState("");
+  const [imCountryCode, setImCountryCode] = useState("+94");
 
   const [fuName, setFuName] = useState("");
   const [fuCountry, setFuCountry] = useState("");
@@ -30,19 +31,30 @@ export default function QuickTaxi() {
   const [fuDateTo, setFuDateTo] = useState("");
   const [fuTourType, setFuTourType] = useState("");
   const [fuWhatsapp, setFuWhatsapp] = useState("");
+  const [fuCountryCode, setFuCountryCode] = useState("+94");
 
   const [popup, setPopup] = useState(false);
   const [popupMsg1, setPopupMsg1] = useState("");
   const [popupMsg2, setPopupMsg2] = useState("");
 
   const countries = ["Sri Lanka", "India", "UK", "USA", "Australia", "Germany", "France", "Japan"];
+  const countryCodes = [
+    { code: "+94", country: "Sri Lanka" },
+    { code: "+91", country: "India" },
+    { code: "+44", country: "UK" },
+    { code: "+1", country: "USA" },
+    { code: "+61", country: "Australia" },
+    { code: "+49", country: "Germany" },
+    { code: "+33", country: "France" },
+    { code: "+81", country: "Japan" },
+  ];
 
   const validateImmediate = () => imName && imCountry && imLocation && imDesc && imPassengers && imWhatsapp;
   const validateFuture = () => fuName && fuCountry && fuLocation && fuWhatsapp && fuVehicle && fuDateFrom && fuTourType;
 
   const submitImmediate = () => {
     if (!validateImmediate()) return alert("Please fill all required fields.");
-    const msg = `🚕 *Immediate Taxi Request* %0AName: ${imName}%0ACountry: ${imCountry}%0APickup: ${imLocation}%0ADescription: ${imDesc}%0APassengers: ${imPassengers}%0AWhatsApp: ${imWhatsapp}`;
+    const msg = `🚕 *Immediate Taxi Request* %0AName: ${imName}%0ACountry: ${imCountry}%0APickup: ${imLocation}%0ADescription: ${imDesc}%0APassengers: ${imPassengers}%0AWhatsApp: ${imCountryCode}${imWhatsapp}`;
     window.open(`https://wa.me/${RECEIVER_WHATSAPP}?text=${msg}`, "_blank");
     setPopupMsg1("Request Submitted!");
     setPopupMsg2("We'll contact you via WhatsApp shortly...");
@@ -52,7 +64,7 @@ export default function QuickTaxi() {
 
   const submitFuture = () => {
     if (!validateFuture()) return alert("Please fill all required fields.");
-    const msg = `🗓 *Future Taxi Request* %0AName: ${fuName}%0ACountry: ${fuCountry}%0AAdults: ${fuAdults}, Children: ${fuChildren}%0APickup: ${fuLocation}%0AVehicle: ${fuVehicle}%0APlaces: ${fuPlaces.join(", ")}%0AFrom: ${fuDateFrom}%0ATo: ${fuDateTo}%0ATour Type: ${fuTourType}%0AWhatsApp: ${fuWhatsapp}`;
+    const msg = `🗓 *Future Taxi Request* %0AName: ${fuName}%0ACountry: ${fuCountry}%0AAdults: ${fuAdults}, Children: ${fuChildren}%0APickup: ${fuLocation}%0AVehicle: ${fuVehicle}%0APlaces: ${fuPlaces.join(", ")}%0AFrom: ${fuDateFrom}%0ATo: ${fuDateTo}%0ATour Type: ${fuTourType}%0AWhatsApp: ${fuCountryCode}${fuWhatsapp}`;
     window.open(`https://wa.me/${RECEIVER_WHATSAPP}?text=${msg}`, "_blank");
     setPopupMsg1("Thank You!");
     setPopupMsg2("We will contact you soon with details...");
@@ -108,8 +120,8 @@ export default function QuickTaxi() {
               <div>
                 <label className="block text-sm font-semibold mb-2 text-blue-300">Country *</label>
                 <select className={selectClass} value={imCountry} onChange={(e) => setImCountry(e.target.value)}>
-                  <option value="">Select Country</option>
-                  {countries.map((c) => <option key={c} value={c}>{c}</option>)}
+                  <option value="" className="bg-gray-800">Select Country</option>
+                  {countries.map((c) => <option key={c} value={c} className="bg-gray-800">{c}</option>)}
                 </select>
               </div>
               <div>
@@ -127,13 +139,20 @@ export default function QuickTaxi() {
             </div>
             <div>
               <label className="block text-sm font-semibold mb-2 text-blue-300">WhatsApp Number *</label>
-              <input type="tel" className={inputClass} placeholder="Your WhatsApp number" value={imWhatsapp} onChange={(e) => setImWhatsapp(e.target.value)} />
+              <div className="flex gap-2">
+                <select className={`${selectClass} w-32`} value={imCountryCode} onChange={(e) => setImCountryCode(e.target.value)}>
+                  {countryCodes.map((cc) => (
+                    <option key={cc.code} value={cc.code} className="bg-gray-800">{cc.code}</option>
+                  ))}
+                </select>
+                <input type="tel" className={inputClass} placeholder="Your WhatsApp number" value={imWhatsapp} onChange={(e) => setImWhatsapp(e.target.value)} />
+              </div>
             </div>
             <div className="flex gap-4 pt-4">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 className={`${buttonClass} bg-white/10 hover:bg-white/20 text-white flex-1`}
-                onClick={() => { setImName(""); setImCountry(""); setImLocation(""); setImDesc(""); setImPassengers(""); setImWhatsapp(""); }}
+                onClick={() => { setImName(""); setImCountry(""); setImLocation(""); setImDesc(""); setImPassengers(""); setImWhatsapp(""); setImCountryCode("+94"); }}
               >
                 Clear
               </motion.button>
@@ -159,8 +178,8 @@ export default function QuickTaxi() {
               <div>
                 <label className="block text-sm font-semibold mb-2 text-green-300">Country *</label>
                 <select className={selectClass} value={fuCountry} onChange={(e) => setFuCountry(e.target.value)}>
-                  <option value="">Select Country</option>
-                  {countries.map((c) => <option key={c} value={c}>{c}</option>)}
+                  <option value="" className="bg-gray-800">Select Country</option>
+                  {countries.map((c) => <option key={c} value={c} className="bg-gray-800">{c}</option>)}
                 </select>
               </div>
             </div>
@@ -240,13 +259,20 @@ export default function QuickTaxi() {
             </div>
             <div>
               <label className="block text-sm font-semibold mb-2 text-green-300">WhatsApp Number *</label>
-              <input type="tel" className={inputClass} placeholder="Your WhatsApp number" value={fuWhatsapp} onChange={(e) => setFuWhatsapp(e.target.value)} />
+              <div className="flex gap-2">
+                <select className={`${selectClass} w-32`} value={fuCountryCode} onChange={(e) => setFuCountryCode(e.target.value)}>
+                  {countryCodes.map((cc) => (
+                    <option key={cc.code} value={cc.code} className="bg-gray-800">{cc.code}</option>
+                  ))}
+                </select>
+                <input type="tel" className={inputClass} placeholder="Your WhatsApp number" value={fuWhatsapp} onChange={(e) => setFuWhatsapp(e.target.value)} />
+              </div>
             </div>
             <div className="flex gap-4 pt-4">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 className={`${buttonClass} bg-white/10 hover:bg-white/20 text-white flex-1`}
-                onClick={() => { setFuName(""); setFuCountry(""); setFuAdults(0); setFuChildren(0); setFuLocation(""); setFuVehicle(""); setFuPlaces([]); setFuDateFrom(""); setFuDateTo(""); setFuTourType(""); setFuWhatsapp(""); }}
+                onClick={() => { setFuName(""); setFuCountry(""); setFuAdults(0); setFuChildren(0); setFuLocation(""); setFuVehicle(""); setFuPlaces([]); setFuDateFrom(""); setFuDateTo(""); setFuTourType(""); setFuWhatsapp(""); setFuCountryCode("+94"); }}
               >
                 Clear
               </motion.button>
