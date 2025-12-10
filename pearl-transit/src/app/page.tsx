@@ -236,7 +236,7 @@ export default function Home() {
               animate={{ scale: 1 }}
               transition={{ delay: 1.3 }}
               className="bg-green-80/30 backdrop-blur-sm border border-green-400/50 px-6 py-3 rounded-lg hover:bg-green-500/50 hover:border-green-300 transition"
-              onClick={() => (window.location.href = 'tel:+94764787744')}
+              onClick={() => (window.location.href = '/quick-taxi')}
             >
               Quick Taxi
             </motion.button>
