@@ -6,6 +6,7 @@ import { ArrowLeft, X, CheckCircle } from "lucide-react";
 declare global {
   interface Window {
     google: typeof google;
+    initAutocomplete: () => void;
   }
 }
 
@@ -99,84 +100,116 @@ export default function QuickTaxi() {
     }
     setLocationAccuracy(null);
 
-    if (!navigator.geolocation) {
-      alert("Geolocation is not supported by your browser");
+    // Check if running on HTTPS or localhost
+    if (typeof window !== "undefined" && window.location.protocol !== "https:" && !window.location.hostname.includes("localhost")) {
+      alert("⚠️ Location services require HTTPS. Please use a secure connection.");
       if (isImmediate) setImLocationLoading(false);
       else setFuLocationLoading(false);
       return;
     }
 
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude, accuracy } = position.coords;
-        setLocationAccuracy(accuracy);
+    if (!navigator.geolocation) {
+      alert("❌ Geolocation is not supported by your browser. Please use Chrome, Firefox, or Safari.");
+      if (isImmediate) setImLocationLoading(false);
+      else setFuLocationLoading(false);
+      return;
+    }
 
-        // Reverse geocoding using Google Maps API
-        if (window.google && window.google.maps) {
-          const geocoder = new window.google.maps.Geocoder();
-          const latlng = { lat: latitude, lng: longitude };
+    console.log("🔍 Requesting location permission...");
 
-          geocoder.geocode({ location: latlng }, (results, status) => {
-            if (status === "OK" && results && results[0]) {
-              const address = results[0].formatted_address;
-              if (isImmediate) {
-                setImLocation(address);
-                setImLocationLoading(false);
+    // Wait 2 seconds before capturing location for better accuracy
+    setTimeout(() => {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          console.log("✅ Location detected:", position);
+          const { latitude, longitude, accuracy } = position.coords;
+          setLocationAccuracy(accuracy);
+
+          // Reverse geocoding using Google Maps API
+          if (window.google && window.google.maps) {
+            const geocoder = new window.google.maps.Geocoder();
+            const latlng = { lat: latitude, lng: longitude };
+
+            geocoder.geocode({ location: latlng }, (results, status) => {
+              console.log("Geocoding status:", status, results);
+              if (status === "OK" && results && results[0]) {
+                const address = results[0].formatted_address;
+                if (isImmediate) {
+                  setImLocation(address);
+                  setImLocationLoading(false);
+                } else {
+                  setFuLocation(address);
+                  setFuLocationLoading(false);
+                }
               } else {
-                setFuLocation(address);
-                setFuLocationLoading(false);
+                const fallbackAddress = `${latitude.toFixed(6)}, ${longitude.toFixed(6)}`;
+                if (isImmediate) {
+                  setImLocation(fallbackAddress);
+                  setImLocationLoading(false);
+                } else {
+                  setFuLocation(fallbackAddress);
+                  setFuLocationLoading(false);
+                }
               }
-            } else {
-              const fallbackAddress = `${latitude.toFixed(6)}, ${longitude.toFixed(6)}`;
-              if (isImmediate) {
-                setImLocation(fallbackAddress);
-                setImLocationLoading(false);
-              } else {
-                setFuLocation(fallbackAddress);
-                setFuLocationLoading(false);
-              }
-            }
-          });
-        } else {
-          // Fallback to coordinates if Google Maps not loaded
-          const fallbackAddress = `${latitude.toFixed(6)}, ${longitude.toFixed(6)}`;
-          if (isImmediate) {
-            setImLocation(fallbackAddress);
-            setImLocationLoading(false);
+            });
           } else {
-            setFuLocation(fallbackAddress);
-            setFuLocationLoading(false);
+            // Fallback to coordinates if Google Maps not loaded
+            console.warn("⚠️ Google Maps not loaded, using coordinates");
+            const fallbackAddress = `${latitude.toFixed(6)}, ${longitude.toFixed(6)}`;
+            if (isImmediate) {
+              setImLocation(fallbackAddress);
+              setImLocationLoading(false);
+            } else {
+              setFuLocation(fallbackAddress);
+              setFuLocationLoading(false);
+            }
           }
+        },
+        (error) => {
+          console.error("❌ Location error:", error);
+          let errorMsg = "Unable to retrieve your location. ";
+          let details = "";
+          
+          if (error.code === 1) {
+            errorMsg = "🚫 Location Permission Denied";
+            details = "Please enable location access in your browser settings:\n\n" +
+                     "Chrome: Click the lock icon → Site Settings → Location → Allow\n" +
+                     "Firefox: Click the shield icon → Permissions → Location → Allow\n" +
+                     "Safari: Settings → Privacy → Location Services → Enable";
+          } else if (error.code === 2) {
+            errorMsg = "📍 Location Unavailable";
+            details = "Make sure:\n• GPS is enabled on your device\n• You're not using a VPN\n• Location services are turned on";
+          } else if (error.code === 3) {
+            errorMsg = "⏱️ Location Request Timeout";
+            details = "The location request took too long. Please try again.";
+          }
+          
+          alert(errorMsg + "\n\n" + details);
+          if (isImmediate) setImLocationLoading(false);
+          else setFuLocationLoading(false);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 15000,
+          maximumAge: 0,
         }
-      },
-      (error) => {
-        console.error("Error getting location:", error);
-        let errorMsg = "Unable to retrieve your location";
-        if (error.code === 1) errorMsg = "Location permission denied";
-        else if (error.code === 2) errorMsg = "Location unavailable";
-        else if (error.code === 3) errorMsg = "Location request timeout";
-        
-        alert(errorMsg);
-        if (isImmediate) setImLocationLoading(false);
-        else setFuLocationLoading(false);
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 10000,
-        maximumAge: 0,
-      }
-    );
+      );
+    }, 2000); // Wait 2 seconds before requesting location for better accuracy
   };
 
   useEffect(() => {
     const loadGoogleMaps = () => {
       if (typeof window !== "undefined" && !window.google) {
         const script = document.createElement("script");
-        script.src = `https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=places`;
+        // Your API key with Places API enabled
+        script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyBkoo-Y-xv5Ia3k0W7g62SNYsOi2650Ahw&libraries=places,geocoding&callback=initAutocomplete`;
         script.async = true;
         script.defer = true;
-        script.onload = initAutocomplete;
+        script.onerror = () => {
+          console.error("Failed to load Google Maps API. Please check your API key and ensure these APIs are enabled in Google Cloud Console:\n- Maps JavaScript API\n- Places API\n- Geocoding API");
+        };
         document.head.appendChild(script);
+        (window as Window & typeof globalThis).initAutocomplete = initAutocomplete;
       } else if (window.google) {
         initAutocomplete();
       }
