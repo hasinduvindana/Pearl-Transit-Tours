@@ -197,12 +197,116 @@ export default function QuickTaxi() {
     }, 2000); // Wait 2 seconds before requesting location for better accuracy
   };
 
+  const handleGetImmediateLocation = () => {
+    setImLocationLoading(true);
+    setLocationAccuracy(null);
+
+    // Wait 2 seconds before capturing location for better accuracy
+    setTimeout(() => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude, accuracy } = position.coords;
+            setLocationAccuracy(accuracy);
+
+            // Reverse geocoding using Google Maps API
+            if (window.google && window.google.maps) {
+              const geocoder = new window.google.maps.Geocoder();
+              const latlng = { lat: latitude, lng: longitude };
+
+              geocoder.geocode({ location: latlng }, (results, status) => {
+                if (status === "OK" && results && results[0]) {
+                  const address = results[0].formatted_address;
+                  setImLocation(address);
+                  setImLocationLoading(false);
+                } else {
+                  const fallbackAddress = `${latitude.toFixed(6)}, ${longitude.toFixed(6)}`;
+                  setImLocation(fallbackAddress);
+                  setImLocationLoading(false);
+                }
+              });
+            } else {
+              const fallbackAddress = `${latitude.toFixed(6)}, ${longitude.toFixed(6)}`;
+              setImLocation(fallbackAddress);
+              setImLocationLoading(false);
+            }
+          },
+          (error) => {
+            console.error("Geolocation error:", error);
+            alert("Unable to get your location. Please enter manually.");
+            setImLocationLoading(false);
+          },
+          {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 0,
+          }
+        );
+      } else {
+        alert("Geolocation is not supported by your browser.");
+        setImLocationLoading(false);
+      }
+    }, 2000);
+  };
+
+  const handleGetFutureLocation = () => {
+    setFuLocationLoading(true);
+    setLocationAccuracy(null);
+
+    // Wait 2 seconds before capturing location for better accuracy
+    setTimeout(() => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude, accuracy } = position.coords;
+            setLocationAccuracy(accuracy);
+
+            // Reverse geocoding using Google Maps API
+            if (window.google && window.google.maps) {
+              const geocoder = new window.google.maps.Geocoder();
+              const latlng = { lat: latitude, lng: longitude };
+
+              geocoder.geocode({ location: latlng }, (results, status) => {
+                if (status === "OK" && results && results[0]) {
+                  const address = results[0].formatted_address;
+                  setFuLocation(address);
+                  setFuLocationLoading(false);
+                } else {
+                  const fallbackAddress = `${latitude.toFixed(6)}, ${longitude.toFixed(6)}`;
+                  setFuLocation(fallbackAddress);
+                  setFuLocationLoading(false);
+                }
+              });
+            } else {
+              const fallbackAddress = `${latitude.toFixed(6)}, ${longitude.toFixed(6)}`;
+              setFuLocation(fallbackAddress);
+              setFuLocationLoading(false);
+            }
+          },
+          (error) => {
+            console.error("Geolocation error:", error);
+            alert("Unable to get your location. Please enter manually.");
+            setFuLocationLoading(false);
+          },
+          {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 0,
+          }
+        );
+      } else {
+        alert("Geolocation is not supported by your browser.");
+        setFuLocationLoading(false);
+      }
+    }, 2000);
+  };
+
   useEffect(() => {
     const loadGoogleMaps = () => {
       if (typeof window !== "undefined" && !window.google) {
         const script = document.createElement("script");
         // Your API key with Places API enabled
-        script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyBkoo-Y-xv5Ia3k0W7g62SNYsOi2650Ahw&libraries=places,geocoding&callback=initAutocomplete`;
+        script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyDZorhvz4FK1jUDm9H9ojuqUlzsJW62wz4&libraries=places,geocoding&callback=initAutocomplete`;
         script.async = true;
         script.defer = true;
         script.onerror = () => {
@@ -300,11 +404,11 @@ export default function QuickTaxi() {
                   <input ref={imLocationRef} type="text" className={inputClass} placeholder="Search location..." value={imLocation} onChange={(e) => setImLocation(e.target.value)} />
                   <button
                     type="button"
-                    onClick={() => getCurrentLocation(true)}
+                    onClick={handleGetImmediateLocation}
                     disabled={imLocationLoading}
-                    className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 px-4 py-3 rounded-lg font-semibold whitespace-nowrap transition min-w-[120px]"
+                    className="bg-purple-600 hover:bg-purple-700 px-3 py-2 rounded-lg transition whitespace-nowrap"
                   >
-                    {imLocationLoading ? "Locating..." : "📍 Current"}
+                    {imLocationLoading ? "Getting..." : "📍 Current"}
                   </button>
                 </div>
                 {imLocationLoading && (
@@ -394,7 +498,7 @@ export default function QuickTaxi() {
                 <input ref={fuLocationRef} type="text" className={inputClass} placeholder="Search location..." value={fuLocation} onChange={(e) => setFuLocation(e.target.value)} />
                 <button
                   type="button"
-                  onClick={() => getCurrentLocation(false)}
+                  onClick={handleGetFutureLocation}
                   disabled={fuLocationLoading}
                   className="bg-green-600 hover:bg-green-700 disabled:bg-gray-600 px-4 py-3 rounded-lg font-semibold whitespace-nowrap transition min-w-[120px]"
                 >
