@@ -264,29 +264,65 @@ export default function PlanTour() {
     return e;
   };
 
-  const handleSubmit = (ev?: React.FormEvent) => {
+  const handleSubmit = async (ev?: React.FormEvent) => {
     ev?.preventDefault();
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
       return;
     }
     setSubmitting(true);
-    // simulate submit + show popup with progress bar for 3 seconds then redirect to "/"
-    setShowSuccess(true);
-    setProgress(0);
-    const total = 3000; // ms
-    const stepMs = 50;
-    let elapsed = 0;
-    const t = setInterval(() => {
-      elapsed += stepMs;
-      const p = Math.min(100, Math.round((elapsed / total) * 100));
-      setProgress(p);
-      if (elapsed >= total) {
-        clearInterval(t);
-        // redirect to home
-        window.location.href = "/";
+
+    // Prepare form data
+    const formData = {
+      name,
+      country: COUNTRIES.find(c => c.code === country)?.label || country,
+      adults,
+      children,
+      arrivalDate: arrivalDisplay,
+      daysCount,
+      places: places.join(", "),
+      needHotels,
+      vehicle: VEHICLES.find(v => v.id === vehicle)?.title || vehicle,
+      activities: Object.keys(activities).filter(act => activities[act]).join(", "),
+      contact: `${contactCode} ${contact}`,
+      email,
+    };
+
+    try {
+      // Send data to backend API
+      const response = await fetch("/api/tour-request", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to submit tour request");
       }
-    }, stepMs);
+
+      // Show success popup with progress bar
+      setShowSuccess(true);
+      setProgress(0);
+      const total = 3000; // ms
+      const stepMs = 50;
+      let elapsed = 0;
+      const t = setInterval(() => {
+        elapsed += stepMs;
+        const p = Math.min(100, Math.round((elapsed / total) * 100));
+        setProgress(p);
+        if (elapsed >= total) {
+          clearInterval(t);
+          // redirect to home
+          window.location.href = "/";
+        }
+      }, stepMs);
+    } catch (error) {
+      console.error("Error submitting tour request:", error);
+      alert("Failed to submit tour request. Please try again.");
+      setSubmitting(false);
+    }
   };
 
   // derived display for arrival
@@ -328,7 +364,15 @@ export default function PlanTour() {
               {/* Name */}
               <div>
                 <label className="block text-xs sm:text-sm text-gray-200">1. Full Name <span className="text-rose-400">*</span></label>
-                <input value={name} onChange={(e) => setName(e.target.value)} className="mt-1 w-full bg-white/6 px-3 py-2 rounded-md text-sm outline-none focus:ring-2 focus:ring-blue-500" placeholder="Your full name" />
+                <input
+                  type="text"
+                  name="fullName"
+                  autoComplete="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="mt-1 w-full bg-white/6 px-3 py-2 rounded-md text-sm outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Your full name"
+                />
                 {errors.name && <div className="text-rose-400 text-xs sm:text-sm mt-1">{errors.name}</div>}
               </div>
 
